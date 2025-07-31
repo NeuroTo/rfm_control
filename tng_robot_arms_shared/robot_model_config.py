@@ -34,7 +34,7 @@ class RobotModelConfig:
             if robot_model in SINGLE_ARM_ROBOT_MODELS:
                 prefixes = [robot_model_config_dict['prefixes']['single_arm']]
             elif robot_model in DUAL_ARM_ROBOT_MODELS:
-                prefixes = robot_model_config_dict['prefixes']['dual_arm']
+                prefixes = [robot_model_config_dict['prefixes']['dual_arm']['left'], robot_model_config_dict['prefixes']['dual_arm']['right']]
 
             cls._instance = cls(robot_model, gripper_model, prefixes)
         return cls._instance
