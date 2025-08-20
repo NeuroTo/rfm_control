@@ -62,7 +62,7 @@ class ConstantGr00tRTCClient(ModelClient):
             [0, 0, 0, 0, -50],
             [0, 0, 0, 0, 0],
         ])
-        self.duration = 7
+        self.duration = 3
 
     def get_action(self, observation: dict[str, np.ndarray], prompt: str) -> dict[str, np.ndarray]:
 
