@@ -7,7 +7,7 @@
 - RFM Action Server: This is the entry point for the user. It receives the prompt, calls the model adapter and action adapter. It also subscribe to the cameras and the joints states.
 
 The following diagram shows how the different components interact with each other:
-![architecture](../../../docs/images/tng_rfm_control.svg)
+![architecture](docs/tng_rfm_control.svg)
 
 
 1. The `RfmActionServer` is called with a prompt by the user / rfm client.
