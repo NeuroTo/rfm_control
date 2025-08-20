@@ -1,14 +1,25 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
+    # Declare launch argument for config string
+    config_arg = DeclareLaunchArgument(
+        'config',
+        default_value='gr00t_so101_rtc',
+        description='Configuration string for the RFM action server'
+    )
+    
     return LaunchDescription([
+        config_arg,
+        
         Node(
             package='tng_control',
             executable='rfm_action_server',
             name='rfm_action_server',
-            arguments=['gr00t_so101_rtc'],
+            arguments=[LaunchConfiguration('config')],
             output='screen'
         ),
 
