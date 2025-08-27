@@ -1,10 +1,10 @@
 from attr import dataclass
 import numpy as np
 
-from tng_control.action_adapter.actions.robot_action import RobotAction
+from tng_control.domain_model.arm_action import ArmAction
 
 
 @dataclass(frozen=True)
-class DeltaEndeffectorAction(RobotAction):
+class DeltaEndeffectorAction(ArmAction):
     position: np.ndarray  # position deltas
     orientation: np.ndarray  # rpy deltas

@@ -1,10 +1,10 @@
 from attr import dataclass
 import numpy as np
 
-from tng_control.action_adapter.actions.robot_action import RobotAction
+from tng_control.domain_model.arm_action import ArmAction
 
 
 @dataclass(frozen=True)
-class AbsoluteJointStateAction(RobotAction):
+class AbsoluteJointStateAction(ArmAction):
     joint_states: np.ndarray  # one-dimensional array of floats
     joint_names: list[str] = []

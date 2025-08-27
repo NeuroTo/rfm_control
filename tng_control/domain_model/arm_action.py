@@ -3,5 +3,5 @@ from attr import dataclass
 
 
 @dataclass(frozen=True)
-class RobotAction(ABC):
+class ArmAction(ABC):
     pass

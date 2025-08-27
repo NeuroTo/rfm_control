@@ -1,9 +1,9 @@
 from collections.abc import Sequence
 
-from tng_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
-from tng_control.action_adapter.actions.delta_endeffector_action import DeltaEndeffectorAction
-from tng_control.action_adapter.actions.action import Action
-from tng_control.action_adapter.actions.synchronous_gripper_action import SynchronousGripperAction
+from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
+from tng_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
+from tng_control.domain_model.robot_action import RobotAction
+from tng_control.domain_model.synchronous_gripper_action import SynchronousGripperAction
 from tng_control.config.model_configs.robot_config import RobotConfig
 
 
@@ -12,8 +12,8 @@ class Gr00tDeltaEndeffectorMapper(ModelOutputMapper):
     def __init__(self, robot_configs: Sequence[RobotConfig]):
         self.robots = robot_configs
 
-    def to_action(self, model_output) -> Sequence[Action]:
-        return [Action(
+    def to_action(self, model_output) -> Sequence[RobotAction]:
+        return [RobotAction(
             robot_config.prefix,
             i,
             DeltaEndeffectorAction(robot_action[:3], robot_action[3:6]),
@@ -29,8 +29,8 @@ class OctoDeltaEndeffectorMapper(ModelOutputMapper):
     def __init__(self, robot_configs: Sequence[RobotConfig]):
         self.robot = robot_configs[0]
 
-    def to_action(self, model_output) -> Sequence[Action]:
-        return [Action(
+    def to_action(self, model_output) -> Sequence[RobotAction]:
+        return [RobotAction(
             self.robot.prefix,
             i,
             DeltaEndeffectorAction(
