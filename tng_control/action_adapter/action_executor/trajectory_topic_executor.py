@@ -2,11 +2,11 @@ from rclpy.task import Future
 from rclpy.node import Node
 from rclpy.publisher import Publisher
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from tng_control.action_adapter.action_executor.robot_action_executor import RobotActionExecutor
+from tng_control.action_adapter.action_executor.robot_action_executor import ArmActionExecutor
 from rclpy.impl import rcutils_logger
 
 
-class TrajectoryTopicExecutor(RobotActionExecutor):
+class TrajectoryTopicExecutor(ArmActionExecutor):
 
     def __init__(self, topic_name: str, joint_names: list[str]):
         self.joint_names = joint_names

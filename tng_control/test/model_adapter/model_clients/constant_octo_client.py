@@ -1,5 +1,5 @@
 from typing import Any
-from tng_control.model_adapter.model_clients.model_client import ModelClient
+from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
 
 
 class ConstantOctoClient(ModelClient):

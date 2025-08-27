@@ -1,5 +1,5 @@
 from attr import dataclass
-from tng_control.action_adapter.actions.gripper_action import GripperAction
+from tng_control.domain_model.gripper_action import GripperAction
 
 
 @dataclass(frozen=True)

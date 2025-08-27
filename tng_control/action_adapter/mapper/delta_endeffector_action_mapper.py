@@ -6,14 +6,14 @@ from moveit_msgs.msg import RobotState
 from builtin_interfaces.msg import Duration
 from trajectory_msgs.msg import JointTrajectoryPoint
 
-from tng_octo.fk_solver import MoveitFKSolver
-from tng_octo.ik_solver import MoveitIKSolver
+from tng_octo.tng_octo.fk_solver import MoveitFKSolver
+from tng_octo.tng_octo.ik_solver import MoveitIKSolver
 
-from tng_control.action_adapter.actions.mapper.pose_util import add_pose
-from tng_control.model_adapter.mapper.pose_util import action_to_pose
-from tng_control.action_adapter.actions.mapper.action_mapper import ActionMapper
-from tng_control.action_adapter.actions.robot_action import RobotAction
-from tng_control.action_adapter.actions.delta_endeffector_action import DeltaEndeffectorAction
+from tng_control.action_adapter.mapper.pose_util import add_pose
+from tng_control.rfm_control.model_adapter.mapper.pose_util import action_to_pose
+from tng_control.action_adapter.mapper.action_mapper import ActionMapper
+from tng_control.domain_model.arm_action import ArmAction
+from tng_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
 from tng_control.config.model_configs.robot_config import RobotConfig
 
 duration_between_goals: Duration = Duration(sec=0, nanosec=10**8)
@@ -28,7 +28,7 @@ class DeltaEndeffectorActionMapper(ActionMapper):
             robot_config.group_name, robot_config.frame_id, robot_config.arm_keys.joint_names)
 
     def action_to_joint_trajectory_point(
-            self, action: RobotAction, state: JointState) -> JointTrajectoryPoint | None:
+            self, action: ArmAction, state: JointState) -> JointTrajectoryPoint | None:
         if not isinstance(action, DeltaEndeffectorAction):
             raise ValueError("Action must be an instance of AbsoluteJointStateAction")
 
@@ -48,10 +48,6 @@ class DeltaEndeffectorActionMapper(ActionMapper):
 
         return point
 
-    def action_to_delta(self, action: RobotAction, state: JointState) -> np.ndarray:
-        if not isinstance(action, DeltaEndeffectorAction):
-            raise ValueError("Action must be an instance of AbsoluteJointStateAction")
-        return np.concatenate([action.position, action.orientation])
 
     def _solve_inverse_kinematic(
             self, pose: Pose, seed_robot_state: RobotState | None = None,

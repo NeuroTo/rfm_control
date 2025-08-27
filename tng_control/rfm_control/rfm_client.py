@@ -7,7 +7,7 @@ from rclpy.action.client import ClientGoalHandle
 from rclpy.task import Future
 from action_msgs.msg import GoalStatus
 
-from tng_control.rfm_control_status_code import RfmControlStatusCode
+from tng_control.rfm_control.rfm_control_status_code import RfmControlStatusCode
 from tng_robot_arms_custom_interfaces.action import MoveFromPrompt
 
 

@@ -5,7 +5,7 @@ import jax
 from octo.model.octo_model import OctoModel
 
 from tng_control.config.model_configs.octo_config import OctoConfig
-from tng_control.model_adapter.model_clients.model_client import ModelClient
+from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
 
 
 class OctoClient(ModelClient):

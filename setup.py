@@ -23,8 +23,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "rfm_action_server = tng_control.rfm_action_server:main",
-            "rfm_client = tng_control.rfm_client:main",
+            "rfm_action_server = tng_control.rfm_control.rfm_action_server:main",
+            "rfm_client = tng_control.rfm_control.rfm_client:main",
         ],
     },
 )

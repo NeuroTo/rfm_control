@@ -1,9 +1,9 @@
 import numpy as np
 import time
 
-from tng_control.gr00t.gr00t_robot_inference_client import RobotInferenceClient
+from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_robot_inference_client import RobotInferenceClient
 from tng_control.config.model_configs.gr00t_config import Gr00tConfig
-from tng_control.model_adapter.model_clients.model_client import ModelClient
+from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
 
 
 class ConstantDualGr00tClient(ModelClient):
