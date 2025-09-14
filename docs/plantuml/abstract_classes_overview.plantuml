@@ -1,0 +1,89 @@
+@startuml rfm_control_overview
+
+class "RfmActionServer" as RfmActionServer {
+  image_listener_callback(msg: Image) -> None
+  joint_state_callback(joint_state: JointState) -> None
+  move_from_prompt_callback(goal_handle: MoveFromPrompt.Goal) -> MoveFromPrompt.Result
+  move_from_prompt(prompt: str) -> RfmControlStatusCode
+}
+package "Model" {
+  abstract class "ModelPort" as ModelPort {
+    current_images : dict[str, cv2.Mat]
+    current_joint_state : JointState
+    {abstract}get_action(prompt: str) -> list[Action]
+    update_image(image: cv2.Mat, key: str) -> None
+    update_joint_state(joint_state: JointState) -> None
+  }
+  abstract class "ModelClient" as ModelClient {
+    {abstract}get_action(observation: dict[str, Any], prompt: str) -> dict[str, Any]
+  }
+  abstract class "ModelOutputMapper" as ModelOutputMapper {
+    {abstract}parse_action(model_output) -> list[Action]
+  }
+package Util {
+
+  class ImageHandler {
+    update_image_callback(image: Image|CompressedImage) -> None
+    get_observation_images() -> dict[str, np.ndarray]
+  }
+
+  class JointStateHandler {
+    update_joint_state_callback(joint_state: JointState) -> None
+    get_current_joint_state() -> JointState
+    get_robot_state(robot: Robot) -> list[float]
+    map_joint_states_to_observation() -> dict[str, np.ndarray]
+  }
+
+}
+}
+
+package "Action" {
+  abstract class "ActionPort" as ActionPort {
+    {abstract}move_from_action(action) -> RfmControlStatusCode
+  }
+  abstract class "RobotActionExecutor" as RobotActionExecutor {
+    joint_names : list[str]
+    joint_trajectory_action_client : ActionClient
+    {abstract}execute_action(action) -> RfmControlStatusCode
+  }
+  abstract class "GripperActionExecutor" as GripperActionExecutor {
+    joint_names : list[str]
+    gripper_command_client : ActionClient
+    {abstract}execute_action(action) -> RfmControlStatusCode
+  }
+  abstract class "ActionMapper" as ActionMapper {
+    {abstract}action_to_delta(action: Pose, state: JointState) -> np.ndarray
+    {abstract}action_to_joint_trajectory_point(action: Pose, state: JointState) -> JointTrajectoryPoint | None
+  }
+  class Robot {
+    robot_config
+    action_mapper
+    robot_action_executor
+    gripper_action_executor
+  }
+}
+
+abstract class "ModelConfig" as ModelConfig {
+  frame_id
+  image_features
+  robot_config
+}
+
+
+RfmActionServer o-- ModelPort : model_port
+ModelPort o-- ModelClient : model_client
+ModelPort *-- ModelOutputMapper: model_output_mapper
+RfmActionServer o-- ActionPort  : action_port
+ModelPort --> ModelConfig: config
+ActionPort --> ModelConfig: config
+
+ModelPort *-- ImageHandler
+ModelPort *-- JointStateHandler
+
+ActionPort o-- Robot
+Robot o-- RobotActionExecutor
+Robot o-- GripperActionExecutor
+Robot o-- ActionMapper
+
+
+@enduml

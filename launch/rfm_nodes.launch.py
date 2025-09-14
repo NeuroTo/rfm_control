@@ -28,7 +28,7 @@ def generate_launch_description():
             executable='image_publisher',
             name='image_publisher',
             parameters=[
-                {'camera_index': 6},
+                {'camera_index': 2},
                 {'topic_prefix': 'wrist'}
             ],
             output='screen'
