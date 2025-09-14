@@ -6,8 +6,8 @@ from moveit_msgs.msg import RobotState
 from builtin_interfaces.msg import Duration
 from trajectory_msgs.msg import JointTrajectoryPoint
 
-from tng_octo.tng_octo.fk_solver import MoveitFKSolver
-from tng_octo.tng_octo.ik_solver import MoveitIKSolver
+from tng_octo.fk_solver import MoveitFKSolver
+from tng_octo.ik_solver import MoveitIKSolver
 
 from tng_control.action_adapter.mapper.pose_util import add_pose
 from tng_control.rfm_control.model_adapter.mapper.pose_util import action_to_pose
