@@ -1,6 +1,7 @@
 from typing import Any
 import os
 import jax
+from typing_extensions import override
 
 from octo.model.octo_model import OctoModel
 
@@ -16,6 +17,7 @@ class OctoClient(ModelClient):
         self.statistics = config.get_dataset_statistics(self.model)
         self.random_key = jax.random.PRNGKey(0)
 
+    @override
     def get_action(self, observation: dict[str, Any],
                    prompt: str) -> list[list[list[float]]]:
 

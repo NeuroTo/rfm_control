@@ -4,6 +4,7 @@ import numpy as np
 from sensor_msgs.msg import JointState
 from rclpy.node import Node
 from rclpy.subscription import Subscription
+from typing_extensions import override
 
 from tng_control.rfm_control.exceptions import JointStatesNotAvailableException
 from tng_control.action_adapter.robot import Robot, RobotConfig
@@ -21,6 +22,7 @@ class JointStateHandler(ObservationHandler):
         self._current_joint_state: JointState | None = None
         self._joint_name_to_index_dict: dict[str, int] = {}
 
+    @override
     def create_subscription(self, node: Node) -> None:
         if self.joint_state_subscriber is not None:
             return
@@ -30,6 +32,7 @@ class JointStateHandler(ObservationHandler):
             self._update_callback,
             10)
 
+    @override
     def get_observation_dict(self) -> dict[str, np.ndarray]:
         """Map current joint states to an observation dictionary format expected by the model."""
         result_dict = {}

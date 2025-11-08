@@ -1,4 +1,5 @@
 import numpy as np
+from typing_extensions import override
 
 from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_robot_inference_client import RobotInferenceClient
 from tng_control.config.model_configs.gr00t_config import Gr00tConfig
@@ -17,6 +18,7 @@ class Gr00tClient(ModelClient):
         """
         self.policy_client = RobotInferenceClient(port=config.port)
 
+    @override
     def get_action(self, observation: dict[str, np.ndarray], prompt: str) -> dict[str, np.ndarray]:
         """Get action from GR00T model."""
 

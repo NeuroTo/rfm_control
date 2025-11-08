@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from typing_extensions import override
 
 from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
 from tng_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
@@ -12,6 +13,7 @@ class Gr00tDeltaEndeffectorMapper(ModelOutputMapper):
     def __init__(self, robot_configs: Sequence[RobotConfig]):
         self.robots = robot_configs
 
+    @override
     def to_action(self, model_output) -> Sequence[RobotAction]:
         return [RobotAction(
             robot_config.prefix,
@@ -29,6 +31,7 @@ class OctoDeltaEndeffectorMapper(ModelOutputMapper):
     def __init__(self, robot_configs: Sequence[RobotConfig]):
         self.robot = robot_configs[0]
 
+    @override
     def to_action(self, model_output) -> Sequence[RobotAction]:
         return [RobotAction(
             self.robot.prefix,

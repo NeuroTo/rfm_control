@@ -1,5 +1,6 @@
 from collections.abc import Sequence
 import numpy as np
+from typing_extensions import override
 from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
 from tng_control.domain_model.robot_action import RobotAction
 from tng_control.config.model_configs.octo_config import OctoConfig
@@ -11,10 +12,12 @@ from tng_control.rfm_control.model_adapter.observation_handler.image_handler imp
 class OctoAdapter(ModelPort):
 
     @property
+    @override
     def model_output_mapper(self) -> ModelOutputMapper:
         return self._model_output_mapper
 
     @property
+    @override
     def model_client(self) -> OctoClient:
         return self._model_client
 
@@ -25,6 +28,7 @@ class OctoAdapter(ModelPort):
         self._model_output_mapper = model_output_mapper
         self._model_client = model_client
 
+    @override
     def get_action(self, prompt: str) -> Sequence[RobotAction]:
         observation_dict: dict[str, np.ndarray] = self.get_concat_observation()
         observation_dict["timestep_pad_mask"] = np.array([[True]])

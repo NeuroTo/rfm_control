@@ -2,6 +2,7 @@ from rclpy.task import Future
 from rclpy.node import Node
 from rclpy.publisher import Publisher
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from typing_extensions import override
 from tng_control.action_adapter.action_executor.robot_action_executor import ArmActionExecutor
 from rclpy.impl import rcutils_logger
 
@@ -15,6 +16,7 @@ class TrajectoryTopicExecutor(ArmActionExecutor):
 
         self.logger = rcutils_logger.RcutilsLogger(name="trajectory_topic_executor")
 
+    @override
     def execute_action(self, action: list[JointTrajectoryPoint], node: Node) -> Future:
         if self.joint_trajectory_publisher is None:
             self.joint_trajectory_publisher = node.create_publisher(

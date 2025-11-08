@@ -1,6 +1,7 @@
 from collections.abc import Sequence
 from typing import cast
 import numpy as np
+from typing_extensions import override
 
 from tng_control.domain_model.robot_action import RobotAction
 from tng_control.domain_model.synchronous_gripper_action import SynchronousGripperAction
@@ -14,6 +15,7 @@ class Gr00tJointStateMapper(ModelOutputMapper):
     def __init__(self, robots_configs: Sequence[RobotConfig]):
         self.robots = robots_configs
 
+    @override
     def to_action(self, model_output: dict[str, list[list[float] | float]]) -> Sequence[RobotAction]:
         return [RobotAction(
             robot_config.prefix,
@@ -30,6 +32,7 @@ class Gr00tJointStateMapperRTC(ModelOutputMapper):
     def __init__(self, robots_configs: Sequence[RobotConfig]):
         self.robots = robots_configs
 
+    @override
     def to_action(self, model_output: dict[str, list[list[float] | float]]) -> Sequence[RobotAction]:
         return [RobotAction(
             robot_config.prefix,

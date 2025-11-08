@@ -1,4 +1,5 @@
 import numpy as np
+from typing_extensions import override
 from tng_control.rfm_control.model_adapter.observation_handler.image_feature import ImageFeature
 from tng_control.config.model_configs.model_config import ModelConfig
 from tng_control.config.model_configs.robot_config import RobotConfig, RobotOutputKeys
@@ -36,6 +37,7 @@ class Gr00tUR5Config(Gr00tConfig):
                                   )]
 
     @property
+    @override
     def image_features(self) -> list[ImageFeature]:
         return [
             ImageFeature(
@@ -53,18 +55,22 @@ class Gr00tUR5Config(Gr00tConfig):
         ]
 
     @property
+    @override
     def frame_id(self) -> str:
         return "base_link"
 
     @property
+    @override
     def joint_state_topic(self) -> str:
         return "/joint_states"
 
     @property
+    @override
     def action_horizon(self) -> int:
         return 8
 
     @property
+    @override
     def time_between_goals(self) -> float:
         return 0.1
 
@@ -95,6 +101,7 @@ class Gr00tSO101Config(Gr00tConfig):
                                   )]
 
     @property
+    @override
     def image_features(self) -> list[ImageFeature]:
         return [
             ImageFeature(
@@ -106,18 +113,22 @@ class Gr00tSO101Config(Gr00tConfig):
         ]
 
     @property
+    @override
     def frame_id(self) -> str:
         return "base_link"
 
     @property
+    @override
     def joint_state_topic(self) -> str:
         return "/joint_states"
 
     @property
+    @override
     def action_horizon(self) -> int:
         return 8
 
     @property
+    @override
     def time_between_goals(self) -> float:
         return 0.5
 
@@ -170,6 +181,7 @@ class Gr00tSo101DualArmConfig(Gr00tSO101Config):
                                   )]
 
     @property
+    @override
     def image_features(self) -> list[ImageFeature]:
         return [
             ImageFeature(
