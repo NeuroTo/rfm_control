@@ -8,7 +8,7 @@ from rclpy.subscription import Subscription
 from rclpy.node import Node
 from tng_control.rfm_control.model_adapter.observation_handler.observation_handler import ObservationHandler
 from tng_control.rfm_control.model_adapter.observation_handler.image_feature import ImageFeature
-from tng_control.rfm_control.rfm_control_status_code import ImageNotAvailableException
+from tng_control.rfm_control.exceptions import ImageNotAvailableException
 
 
 class ImageHandler(ObservationHandler):

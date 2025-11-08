@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from rclpy.node import Node
 from tng_control.domain_model.robot_action import RobotAction
-from tng_control.rfm_control.rfm_control_status_code import RfmControlStatusCode
+from tng_control.rfm_control.status_code import RfmControlStatusCode
 from tng_control.action_adapter.robot import Robot
 from tng_control.rfm_control.model_adapter.observation_handler.joint_state_handler import JointStateHandler
 
