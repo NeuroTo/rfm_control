@@ -5,7 +5,7 @@ from sensor_msgs.msg import JointState
 from rclpy.node import Node
 from rclpy.subscription import Subscription
 
-from tng_control.rfm_control.rfm_control_status_code import JointStatesNotAvailableException
+from tng_control.rfm_control.exceptions import JointStatesNotAvailableException
 from tng_control.action_adapter.robot import Robot, RobotConfig
 from tng_control.rfm_control.model_adapter.observation_handler.observation_handler import ObservationHandler
 from tng_control.config.model_configs.robot_config import RobotOutputKeys

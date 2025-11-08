@@ -10,13 +10,3 @@ class RfmControlStatusCode(Enum):
     IMAGES_UNAVAILABLE = 5                  # Model
     JOINTS_STATES_UNAVAILABLE = 6           # Model
     GRIPPER_ACTION_EXECUTION_FAILED = 7     # Action
-
-
-class ImageNotAvailableException(Exception):
-    def __init__(self, image_topic: str):
-        super().__init__(f"Image '{image_topic}' is not available")
-
-
-class JointStatesNotAvailableException(Exception):
-    def __init__(self):
-        super().__init__("Joint states are not available")

@@ -8,8 +8,9 @@ from rclpy.node import Node
 from tng_control.rfm_control.model_adapter.model_port import ModelPort
 from tng_control.action_adapter.action_port import ActionPort
 from tng_control.rfm_control.model_adapter.adapter_provider import get_adapters, ConfigStrings
-from tng_control.rfm_control.rfm_control_status_code import (
-    RfmControlStatusCode, ImageNotAvailableException, JointStatesNotAvailableException
+from tng_control.rfm_control.status_code import RfmControlStatusCode
+from tng_control.rfm_control.exceptions import (
+    ImageNotAvailableException, JointStatesNotAvailableException
 )
 from tng_robot_arms_custom_interfaces.action import MoveFromPrompt
 
