@@ -30,8 +30,9 @@ class ImageHandler(ObservationHandler):
             history=rclpy.qos.HistoryPolicy.KEEP_LAST, depth=1)
         self.subscription_images = [
             node.create_subscription(
-                image_feature.image_type, image_feature.topic_name, lambda x,
-                key=image_feature.topic_name: self._update_callback(x, key),
+                image_feature.image_type,
+                image_feature.topic_name, 
+                lambda x: self._update_callback(x, key=image_feature.topic_name),
                 qos_profile=qos_profile)
             for image_feature in self.image_features
         ]
