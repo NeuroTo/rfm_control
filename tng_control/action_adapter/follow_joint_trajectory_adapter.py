@@ -10,7 +10,7 @@ from tng_control.domain_model.robot_action import RobotAction
 from tng_control.action_adapter.action_port import ActionPort
 from tng_control.rfm_control.status_code import RfmControlStatusCode
 from tng_control.config.model_configs.model_config import ModelConfig
-from tng_control.rfm_control.model_adapter.observation_handler.joint_state_handler import JointStateHandler
+from tng_control.action_adapter.joint_state_subscriber import JointStateSubscriber
 from tng_control.action_adapter.robot import Robot
 
 
@@ -27,19 +27,19 @@ class FollowJointTrajectoryAdapter(ActionPort):
 
     @property
     @override
-    def joint_state_handler(self) -> JointStateHandler:
-        return self._joint_state_handler
+    def joint_state_subscriber(self) -> JointStateSubscriber:
+        return self._joint_state_subscriber
 
-    @joint_state_handler.setter
-    def joint_state_handler(self, value: JointStateHandler):
-        self._joint_state_handler = value
+    @joint_state_subscriber.setter
+    def joint_state_subscriber(self, value: JointStateSubscriber):
+        self._joint_state_subscriber = value
 
     def __init__(
             self, robots: Sequence[Robot],
-            config: ModelConfig, joint_state_handler: JointStateHandler):
+            config: ModelConfig, joint_state_subscriber: JointStateSubscriber):
         self.robots = robots
         self.config = config
-        self.joint_state_handler = joint_state_handler
+        self.joint_state_subscriber = joint_state_subscriber
 
     @override
     def move(self, actions: Sequence[RobotAction], node: Node) -> RfmControlStatusCode:
@@ -55,7 +55,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
                     continue
 
                 trajectory_point = robot.action_mapper.action_to_joint_trajectory_point(
-                    action.arm_action, self.joint_state_handler.get_current_joint_state())
+                    action.arm_action, self.joint_state_subscriber.get_current_joint_state())
 
                 if trajectory_point is None:
                     return RfmControlStatusCode.ACTION_MAPPING_FAILED

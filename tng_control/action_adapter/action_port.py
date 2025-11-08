@@ -4,7 +4,7 @@ from rclpy.node import Node
 from tng_control.domain_model.robot_action import RobotAction
 from tng_control.rfm_control.status_code import RfmControlStatusCode
 from tng_control.action_adapter.robot import Robot
-from tng_control.rfm_control.model_adapter.observation_handler.joint_state_handler import JointStateHandler
+from tng_control.action_adapter.joint_state_subscriber import JointStateSubscriber
 
 
 class ActionPort(ABC):
@@ -16,7 +16,7 @@ class ActionPort(ABC):
 
     @property
     @abstractmethod
-    def joint_state_handler(self) -> JointStateHandler:
+    def joint_state_subscriber(self) -> JointStateSubscriber:
         pass
 
     @abstractmethod
