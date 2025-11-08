@@ -9,5 +9,5 @@ from tng_control.domain_model.gripper_action import GripperAction
 class RobotAction(ABC):
     robot_prefix: str
     timestep_id: int
-    robot_action: ArmAction
+    arm_action: ArmAction
     gripper_action: GripperAction

@@ -20,7 +20,7 @@ def construct_geometry_msg_quaternion(coords: np.ndarray) -> Quaternion:
 
 
 def to_quaternion_from_euler(rpy_angles: np.ndarray) -> Quaternion:
-    quaternion: np.ndarray = Rotation.from_euler('xyz', rpy_angles).as_quat()
+    quaternion: np.ndarray = Rotation.from_euler('xyz', rpy_angles).as_quat(canonical=True)
     return construct_geometry_msg_quaternion(quaternion)
 
 

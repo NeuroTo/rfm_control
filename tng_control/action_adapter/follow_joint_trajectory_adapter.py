@@ -55,7 +55,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
                     continue
 
                 trajectory_point = robot.action_mapper.action_to_joint_trajectory_point(
-                    action.robot_action, self.joint_state_handler.get_current_joint_state())
+                    action.arm_action, self.joint_state_handler.get_current_joint_state())
 
                 if trajectory_point is None:
                     return RfmControlStatusCode.ACTION_MAPPING_FAILED
