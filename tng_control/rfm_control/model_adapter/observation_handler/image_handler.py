@@ -6,6 +6,7 @@ from sensor_msgs.msg import Image, CompressedImage
 import rclpy
 from rclpy.subscription import Subscription
 from rclpy.node import Node
+from typing_extensions import override
 from tng_control.rfm_control.model_adapter.observation_handler.observation_handler import ObservationHandler
 from tng_control.rfm_control.model_adapter.observation_handler.image_feature import ImageFeature
 from tng_control.rfm_control.exceptions import ImageNotAvailableException
@@ -20,6 +21,7 @@ class ImageHandler(ObservationHandler):
         self.current_images: dict[str, Image | CompressedImage] = {}
         self.cv2_bridge: CvBridge = CvBridge()
 
+    @override
     def create_subscription(self, node: Node) -> None:
         if self.subscription_images is not None:
             return
@@ -34,6 +36,7 @@ class ImageHandler(ObservationHandler):
             for image_feature in self.image_features
         ]
 
+    @override
     def get_observation_dict(self) -> dict[str, np.ndarray]:
         observation = {}
         for image_ft in self.image_features:

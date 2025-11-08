@@ -2,7 +2,8 @@ from rclpy.task import Future
 from rclpy.action import ActionClient
 from rclpy.node import Node
 from control_msgs.action import FollowJointTrajectory
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from trajectory_msgs.msg import JointTrajectory
+from typing_extensions import override
 from tng_control.action_adapter.action_executor.robot_action_executor import ArmActionExecutor
 
 
@@ -13,6 +14,7 @@ class TrajectoryActionExecutor(ArmActionExecutor):
         self.topic_name = topic_name
         self._action_client = None
 
+    @override
     def execute_action(self, node: Node, action: JointTrajectory) -> Future:
         overall_future = Future()
         joint_trajectory: JointTrajectory = action

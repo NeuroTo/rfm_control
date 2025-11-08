@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-import time
+from typing_extensions import override
 import rclpy
 from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectoryPoint
@@ -17,6 +17,7 @@ from tng_control.action_adapter.robot import Robot
 class FollowJointTrajectoryAdapter(ActionPort):
 
     @property
+    @override
     def robots(self) -> Sequence[Robot]:
         return self._robots
 
@@ -25,6 +26,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
         self._robots = value
 
     @property
+    @override
     def joint_state_handler(self) -> JointStateHandler:
         return self._joint_state_handler
 
@@ -39,6 +41,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
         self.config = config
         self.joint_state_handler = joint_state_handler
 
+    @override
     def move(self, actions: Sequence[RobotAction], node: Node) -> RfmControlStatusCode:
 
         for robot in self.robots:

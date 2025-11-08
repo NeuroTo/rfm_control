@@ -1,10 +1,9 @@
-import numpy as np
-
 from sensor_msgs.msg import JointState
 from geometry_msgs.msg import Pose, PoseStamped
 from moveit_msgs.msg import RobotState
 from builtin_interfaces.msg import Duration
 from trajectory_msgs.msg import JointTrajectoryPoint
+from typing_extensions import override
 
 from tng_octo.fk_solver import MoveitFKSolver
 from tng_octo.ik_solver import MoveitIKSolver
@@ -27,6 +26,7 @@ class DeltaEndeffectorActionMapper(ActionMapper):
         self.ik_solver: MoveitIKSolver = MoveitIKSolver(
             robot_config.group_name, robot_config.frame_id, robot_config.arm_keys.joint_names)
 
+    @override
     def action_to_joint_trajectory_point(
             self, action: ArmAction, state: JointState) -> JointTrajectoryPoint | None:
         if not isinstance(action, DeltaEndeffectorAction):

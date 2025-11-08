@@ -1,4 +1,5 @@
 import numpy as np
+from typing_extensions import override
 
 from sensor_msgs.msg import Image
 
@@ -42,6 +43,7 @@ class OctoUR5Config(OctoConfig):
                                   ))]
 
     @property
+    @override
     def image_features(self) -> list[ImageFeature]:
         return [
             ImageFeature(
@@ -53,13 +55,16 @@ class OctoUR5Config(OctoConfig):
         ]
 
     @property
+    @override
     def joint_state_topic(self) -> str:
         return "/joint_states"
 
     @property
+    @override
     def action_horizon(self) -> int:
         return 4
 
     @property
+    @override
     def time_between_goals(self) -> float:
         return 1.0
