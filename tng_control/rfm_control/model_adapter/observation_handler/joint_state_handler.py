@@ -43,19 +43,14 @@ class JointStateHandler(ObservationHandler):
 
         return result_dict
 
-    def get_current_joint_state(self) -> JointState:
+    def _get_current_joint_state(self) -> JointState:
         if not self._current_joint_state:
             raise JointStatesNotAvailableException()
         return self._current_joint_state
 
-    def get_robot_state(self, robot: Robot) -> list[float]:
-        joint_state = self.get_current_joint_state()
-        return [joint_state.position[self._joint_name_to_index(joint)]
-                for joint in robot.robot_config.arm_keys.joint_names]
-
     def _get_joint_data(self, joint_name: str) -> tuple[float, float, float]:
         idx = self._joint_name_to_index(joint_name)
-        joint_state = self.get_current_joint_state()
+        joint_state = self._get_current_joint_state()
         return (
             joint_state.position[idx] * 100 / np.pi,
             joint_state.velocity[idx] * 100 / np.pi,
@@ -65,7 +60,7 @@ class JointStateHandler(ObservationHandler):
     def _joint_name_to_index(self, joint_name: str) -> int:
         if not self._joint_name_to_index_dict:
             self._joint_name_to_index_dict = {name: i for i,
-                                              name in enumerate(self.get_current_joint_state().name)}
+                                              name in enumerate(self._get_current_joint_state().name)}
         return self._joint_name_to_index_dict[joint_name]
 
     def _update_callback(self, joint_state: JointState) -> None:
