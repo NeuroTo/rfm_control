@@ -1,5 +1,4 @@
 from collections.abc import Sequence
-from typing import cast
 import numpy as np
 from typing_extensions import override
 
@@ -18,28 +17,47 @@ class Gr00tJointStateMapper(ModelOutputMapper[Gr00tAction]):
 
     @override
     def to_action(self, model_output: Gr00tAction) -> Sequence[RobotAction]:
-        return [RobotAction(
-            robot_config.prefix,
-            i,
-            AbsoluteJointStateAction(np.array(robot_action) * np.pi / 100),
-            SynchronousGripperAction(float(cast(float, gripper)) * np.pi / 100)
-        ) for robot_config in self.robots
-            for i, (robot_action, gripper) in enumerate(zip(model_output[robot_config.arm_keys.output_position_key],
-                                                            model_output[robot_config.gripper_keys.output_position_key]))]
+        actions: list[RobotAction] = []
+        for robot_config in self.robots:
+            for i, (joint_positions, gripper_aperture) in enumerate(zip(
+                model_output[robot_config.arm_keys.output_position_key],
+                model_output[robot_config.gripper_keys.output_position_key])):
+                actions.append(self._to_robot_action(robot_config, i, joint_positions, gripper_aperture))
+        return actions
 
+    def _to_robot_action(self, robot_config: RobotConfig, timestep: int, joint_positions: np.ndarray, gripper_aperture: float) -> RobotAction:
+        joint_states = np.array(joint_positions) * np.pi / 100
+        gripper_aperture = float(gripper_aperture) * np.pi / 100
+
+        return RobotAction(
+            robot_prefix=robot_config.prefix,
+            timestep_id=timestep,
+            arm_action=AbsoluteJointStateAction(joint_states=joint_states),
+            gripper_action=SynchronousGripperAction(gripper_aperture=gripper_aperture)
+        )
 
 class Gr00tJointStateMapperRTC(ModelOutputMapper[Gr00tAction]):
 
     def __init__(self, robots_configs: Sequence[RobotConfig]):
         self.robots = robots_configs
 
+    # TODO: check if Gr00tJointStateMapper is not sufficient for RTC.
+    #  Shouldn't the model_output simply contain only one element but could still run through the loop of the Gr00tJointStateMapper implementation?
     @override
     def to_action(self, model_output: Gr00tAction) -> Sequence[RobotAction]:
-        return [RobotAction(
-            robot_config.prefix,
-            0,
-            AbsoluteJointStateAction(
-                np.array(model_output[robot_config.arm_keys.output_position_key]) * np.pi / 100),
-            SynchronousGripperAction(
-                float(cast(float, model_output[robot_config.gripper_keys.output_position_key])) * np.pi / 100)
-        ) for robot_config in self.robots]
+        actions: list[RobotAction] = []
+        for robot_config in self.robots:
+            actions.append(self._to_robot_action(robot_config, model_output))
+        return actions
+
+    def _to_robot_action(self, robot_config: RobotConfig, model_action: Gr00tAction) -> RobotAction:
+        joint_states = np.array(model_action[robot_config.arm_keys.output_position_key]) * np.pi / 100
+        gripper_aperture = float(model_action[robot_config.gripper_keys.output_position_key]) * np.pi / 100
+
+        return RobotAction(
+            robot_prefix=robot_config.prefix,
+            timestep_id=0,
+            arm_action=AbsoluteJointStateAction(joint_states=joint_states),
+            gripper_action=SynchronousGripperAction(gripper_aperture=gripper_aperture)
+        )
+
