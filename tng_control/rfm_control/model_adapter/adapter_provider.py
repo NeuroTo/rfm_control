@@ -53,7 +53,7 @@ class Gr00tAdapterFactory:
         robots = self._create_robots()
         model_adapter = Gr00tAdapter(self.config, model_client, model_output_mapper, [
                                      image_handler, joint_state_handler])
-        action_adapter = FollowJointTrajectoryAdapter(robots, self.config, joint_state_subscriber)
+        action_adapter = FollowJointTrajectoryAdapter(robots, joint_state_subscriber)
 
         return (model_adapter, action_adapter)
 
@@ -90,7 +90,7 @@ class OctoAdapterFactory:
         model_adapter = OctoAdapter(self.config, model_client, model_output_mapper, [image_handler])
         robots = [Robot.from_robot_config_delta_action(robot_config)
                   for robot_config in self.config.robot_configs]
-        action_adapter = FollowJointTrajectoryAdapter(robots, self.config, joint_state_subscriber)
+        action_adapter = FollowJointTrajectoryAdapter(robots, joint_state_subscriber)
         return (model_adapter, action_adapter)
 
     def create_default(self) -> tuple[ModelPort, ActionPort]:

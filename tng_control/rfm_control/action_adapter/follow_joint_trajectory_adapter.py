@@ -9,7 +9,6 @@ from builtin_interfaces.msg import Duration
 from tng_control.rfm_control.domain_model.robot_action import RobotAction
 from tng_control.rfm_control.action_adapter.action_port import ActionPort
 from tng_control.rfm_control.status_code import RfmControlStatusCode
-from tng_control.rfm_control.config.model_configs.model_config import ModelConfig
 from tng_control.rfm_control.action_adapter.joint_state_subscriber import JointStateSubscriber
 from tng_control.rfm_control.action_adapter.robot import Robot
 
@@ -36,18 +35,17 @@ class FollowJointTrajectoryAdapter(ActionPort):
 
     def __init__(
             self, robots: Sequence[Robot],
-            config: ModelConfig, joint_state_subscriber: JointStateSubscriber):
+            joint_state_subscriber: JointStateSubscriber):
         self.robots = robots
-        self.config = config
         self.joint_state_subscriber = joint_state_subscriber
 
     @override
-    def move(self, actions: Sequence[RobotAction], node: Node) -> RfmControlStatusCode:
+    def move(self, node: Node, actions: Sequence[RobotAction], action_execution_horizon: int) -> RfmControlStatusCode:
 
         for robot in self.robots:
             robot.set_actions(actions)
 
-        for t in range(self.config.action_horizon):
+        for t in range(action_execution_horizon):
             futures = []
             for robot in self.robots:
                 action = robot.get_action(t)
@@ -59,7 +57,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
 
                 if trajectory_point is None:
                     return RfmControlStatusCode.ACTION_MAPPING_FAILED
-                self._add_timestamps_to_trajectory(trajectory_point)
+                self._add_timestamps_to_trajectory(trajectory_point, action.arm_action.time_between_goals)
                 gripper_action = action.gripper_action
 
                 robot_action_future = robot.robot_action_executor.execute_action(
@@ -77,9 +75,9 @@ class FollowJointTrajectoryAdapter(ActionPort):
         return RfmControlStatusCode.SUCCESS
 
     def _add_timestamps_to_trajectory(
-            self, trajectory_point: JointTrajectoryPoint) -> None:
+            self, trajectory_point: JointTrajectoryPoint, time_between_goals: float) -> None:
         duration_between_goals = Duration(
-            sec=int(self.config.time_between_goals),
-            nanosec=int((self.config.time_between_goals % 1) * 1e9))
+            sec=int(time_between_goals),
+            nanosec=int((time_between_goals % 1) * 1e9))
 
         trajectory_point.time_from_start = duration_between_goals

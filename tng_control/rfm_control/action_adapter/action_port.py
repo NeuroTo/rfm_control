@@ -20,5 +20,5 @@ class ActionPort(ABC):
         pass
 
     @abstractmethod
-    def move(self, actions: Sequence[RobotAction], node: Node) -> RfmControlStatusCode:
+    def move(self, node: Node, actions: Sequence[RobotAction], action_execution_horizon: int) -> RfmControlStatusCode:
         pass

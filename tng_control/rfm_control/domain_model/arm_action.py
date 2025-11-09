@@ -4,4 +4,4 @@ from attr import dataclass
 
 @dataclass(frozen=True)
 class ArmAction(ABC):
-    pass
+    time_between_goals: float

@@ -17,8 +17,9 @@ from tng_control.rfm_control.domain_model.robot_action import RobotAction
 from tng_robot_arms_custom_interfaces.action import MoveFromPrompt
 
 
-# number of iterations of calls to model and executing the action
-NUM_ITERATIONS: int = 500
+
+NUM_ITERATIONS: int = 500  # number of iterations of calls to model and executing the action
+ACTION_EXECUTION_HORIZON: int = 8  # number of actions to execute from an action chunk
 
 
 class RfmActionServer(Node):
@@ -70,7 +71,7 @@ class RfmActionServer(Node):
         except JointStatesNotAvailableException:
             return RfmControlStatusCode.JOINTS_STATES_UNAVAILABLE
 
-        return self._action_port.move(next_actions, self)
+        return self._action_port.move(self, next_actions, ACTION_EXECUTION_HORIZON)
 
 
 def main(args: list[str] | None = None) -> None:
