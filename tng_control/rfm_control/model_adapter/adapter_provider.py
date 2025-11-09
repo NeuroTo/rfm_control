@@ -47,8 +47,7 @@ class Gr00tAdapterFactory:
                 model_client: Gr00tModelClient) -> tuple[ModelPort, ActionPort]:
 
         image_handler = ImageHandler(self.config.image_features)
-        joint_state_handler = JointStateHandler(
-            self.config.robot_configs, self.config.joint_state_topic)
+        joint_state_handler = JointStateHandler(self.config.robot_configs)
         robots = self._create_robots()
         model_adapter = Gr00tAdapter(model_client, model_output_mapper, [image_handler, joint_state_handler])
         action_adapter = FollowJointTrajectoryAdapter(robots, joint_state_handler)
@@ -81,8 +80,7 @@ class OctoAdapterFactory:
 
     def _create(self, model_client: OctoModelClient) -> tuple[ModelPort, ActionPort]:
         image_handler = ImageHandler(self.config.image_features)
-        joint_state_handler = JointStateHandler(
-            self.config.robot_configs, self.config.joint_state_topic)
+        joint_state_handler = JointStateHandler(self.config.robot_configs)
         model_output_mapper = OctoDeltaEndeffectorMapper(self.config.robot_configs)
         model_adapter = OctoAdapter(model_client, model_output_mapper, [image_handler])
         robots = [Robot.from_robot_config_delta_action(robot_config)
@@ -100,6 +98,11 @@ class OctoAdapterFactory:
 
 
 def get_adapters(config_string: ConfigStrings) -> tuple[ModelPort, ActionPort]:
+    """
+    Get adapters for the model and action port for the given config string.
+    Model and action adapters are coupled to each other because the model configuration needs to match the motion executor configuration.
+    E.g. if the model is trained for delta actions, the action adapter needs to process those delta actions correctly.
+    """
     robot_description = get_robot_description_from_topic()
     ros2_control_joint_configs = parse_robot_description_to_joint_configs(robot_description)
 

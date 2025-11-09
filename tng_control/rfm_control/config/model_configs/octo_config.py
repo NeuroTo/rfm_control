@@ -40,7 +40,8 @@ class OctoUR5Config(OctoConfig):
                                       output_position_key="action.finger_positions",
                                       output_velocity_key="",
                                       joint_names=[]
-                                  ))]
+                                  ),
+                                  joint_state_topic="/joint_states")]
 
     @property
     @override
@@ -53,8 +54,3 @@ class OctoUR5Config(OctoConfig):
                 transformation=lambda x: np.array([np.array([x])]),
                 image_type=Image)
         ]
-
-    @property
-    @override
-    def joint_state_topic(self) -> str:
-        return "/joint_states"
