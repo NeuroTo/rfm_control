@@ -60,7 +60,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
                 self._add_timestamps_to_trajectory(trajectory_point, action.arm_action.time_between_goals)
                 gripper_action = action.gripper_action
 
-                robot_action_future = robot.robot_action_executor.execute_action(
+                robot_action_future = robot.arm_action_executor.execute_action(
                     [trajectory_point], node)
                 gripper_action_future = robot.gripper_action_executor.execute_gripper_action(
                     GripperCommand(position=gripper_action.gripper_aperture, max_effort=2.0),
