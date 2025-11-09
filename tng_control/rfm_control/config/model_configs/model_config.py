@@ -32,9 +32,3 @@ class ModelConfig:
     @abstractmethod
     def image_features(self) -> list[ImageFeature]:
         pass
-
-    @property
-    @abstractmethod
-    def joint_state_topic(self) -> str:
-        pass
-

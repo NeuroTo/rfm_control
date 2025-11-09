@@ -15,11 +15,26 @@ class JointStateHandler(ObservationHandler):
 
     joint_state_subscriber: Subscription | None = None
 
-    def __init__(self, robots: Sequence[RobotConfig], topic_name: str) -> None:
-        self.joint_state_topic = topic_name
+    def __init__(self, robots: Sequence[RobotConfig]) -> None:
         self.robots = robots
         self._current_joint_state: JointState | None = None
         self._joint_name_to_index_dict: dict[str, int] = {}
+        
+        # Get joint_state_topic from first robot and validate all robots use the same topic
+        if not robots:
+            raise ValueError("At least one robot config must be provided")
+        
+        self.joint_state_topic = robots[0].joint_state_topic
+        
+        # Validate all robots use the same joint_state_topic
+        # TODO: implement real multi-joint state topic support for different joint state topics of different robots.
+        for robot in robots:
+            if robot.joint_state_topic != self.joint_state_topic:
+                raise ValueError(
+                    f"All robots must use the same joint_state_topic. "
+                    f"Found {robot.prefix} with {robot.joint_state_topic}, "
+                    f"expected {self.joint_state_topic}"
+                )
 
     @override
     def create_subscription(self, node: Node) -> None:

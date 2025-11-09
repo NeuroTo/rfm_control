@@ -33,7 +33,8 @@ class Gr00tUR5Config(Gr00tConfig):
                                       output_position_key="action.finger_positions",
                                       output_velocity_key="",
                                       joint_names=[]
-                                  )
+                                  ),
+                                  joint_state_topic="/joint_states"
                                   )]
 
     @property
@@ -53,11 +54,6 @@ class Gr00tUR5Config(Gr00tConfig):
                transformation=lambda x: np.array([x])
             )
         ]
-
-    @property
-    @override
-    def joint_state_topic(self) -> str:
-        return "/joint_states"
 
 
 class Gr00tSO101Config(Gr00tConfig):
@@ -82,7 +78,8 @@ class Gr00tSO101Config(Gr00tConfig):
                                       output_position_key="action.gripper",
                                       output_velocity_key="",
                                       joint_names=[]
-                                  )
+                                  ),
+                                  joint_state_topic="/joint_states"
                                   )]
 
     @property
@@ -96,11 +93,6 @@ class Gr00tSO101Config(Gr00tConfig):
                 "video.global", (640, 480), "/global_front/image_raw/compressed", lambda x: np.array([x]),
             ),
         ]
-
-    @property
-    @override
-    def joint_state_topic(self) -> str:
-        return "/joint_states"
 
 
 class Gr00tSo101DualArmConfig(Gr00tSO101Config):
@@ -125,7 +117,8 @@ class Gr00tSo101DualArmConfig(Gr00tSO101Config):
                                       output_position_key="action.gripper",
                                       output_velocity_key="",
                                       joint_names=[]
-                                  )
+                                  ),
+                                  joint_state_topic="/joint_states"
                                   ),
                       RobotConfig(prefix="left_arm",
                                   group_name="arm",
@@ -147,7 +140,8 @@ class Gr00tSo101DualArmConfig(Gr00tSO101Config):
                                       output_position_key="action.left_gripper_pos",
                                       output_velocity_key="action.left_gripper_vel",
                                       joint_names=[]
-                                  )
+                                  ),
+                                  joint_state_topic="/joint_states"
                                   )]
 
     @property

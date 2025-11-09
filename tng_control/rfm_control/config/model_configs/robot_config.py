@@ -22,4 +22,5 @@ class RobotConfig:
     frame_id: str
     arm_keys: RobotOutputKeys
     gripper_keys: RobotOutputKeys
+    joint_state_topic: str
     time_between_goals: float = DEFAULT_TIME_BETWEEN_GOALS

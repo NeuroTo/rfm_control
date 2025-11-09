@@ -75,6 +75,6 @@ class ConstantGr00tRTCClient(Gr00tModelClient):
 
         return {
             "action.single_arm": self.positions[position_index],
-            "action.gripper": 12.2,
+            "action.gripper": np.array([12.2]),
             "action.single_arm_velocity": np.array([100, 100, 100, 100, 100]),
-            "action.gripper_velocity": 50}
+            "action.gripper_velocity": np.array([50])}
