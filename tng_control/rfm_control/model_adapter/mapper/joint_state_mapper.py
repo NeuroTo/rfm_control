@@ -32,7 +32,8 @@ class Gr00tJointStateMapper(ModelOutputMapper[Gr00tAction]):
         return RobotAction(
             robot_prefix=robot_config.prefix,
             timestep_id=timestep,
-            arm_action=AbsoluteJointStateAction(joint_states=joint_states),
+            arm_action=AbsoluteJointStateAction(joint_states=joint_states,
+                                                time_between_goals=robot_config.time_between_goals),
             gripper_action=SynchronousGripperAction(gripper_aperture=gripper_aperture)
         )
 
@@ -57,7 +58,8 @@ class Gr00tJointStateMapperRTC(ModelOutputMapper[Gr00tAction]):
         return RobotAction(
             robot_prefix=robot_config.prefix,
             timestep_id=0,
-            arm_action=AbsoluteJointStateAction(joint_states=joint_states),
+            arm_action=AbsoluteJointStateAction(joint_states=joint_states,
+                                                time_between_goals=robot_config.time_between_goals),
             gripper_action=SynchronousGripperAction(gripper_aperture=gripper_aperture)
         )
 
