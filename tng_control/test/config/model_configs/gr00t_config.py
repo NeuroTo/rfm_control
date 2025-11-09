@@ -1,4 +1,4 @@
-from tng_control.config.model_configs.gr00t_config import Gr00tSO101Config, Gr00tSo101DualArmConfig
+from tng_control.rfm_control.config.model_configs.gr00t_config import Gr00tSO101Config, Gr00tSo101DualArmConfig
 from tng_control.rfm_control.model_adapter.observation_handler.image_feature import ImageFeature
 
 

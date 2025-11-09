@@ -19,3 +19,4 @@ class RobotConfig:
     frame_id: str
     arm_keys: RobotOutputKeys
     gripper_keys: RobotOutputKeys
+

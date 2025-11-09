@@ -7,9 +7,8 @@ from rclpy.subscription import Subscription
 from typing_extensions import override
 
 from tng_control.rfm_control.exceptions import JointStatesNotAvailableException
-from tng_control.action_adapter.robot import Robot, RobotConfig
+from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig, RobotOutputKeys
 from tng_control.rfm_control.model_adapter.observation_handler.observation_handler import ObservationHandler
-from tng_control.config.model_configs.robot_config import RobotOutputKeys
 
 
 class JointStateHandler(ObservationHandler):

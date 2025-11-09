@@ -35,4 +35,3 @@ class JointStateSubscriber:
     def _update_callback(self, joint_state: JointState) -> None:
         """Callback for joint state updates."""
         self._current_joint_state = joint_state
-

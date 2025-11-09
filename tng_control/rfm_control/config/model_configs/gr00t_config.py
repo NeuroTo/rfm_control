@@ -1,8 +1,8 @@
 import numpy as np
 from typing_extensions import override
 from tng_control.rfm_control.model_adapter.observation_handler.image_feature import ImageFeature
-from tng_control.config.model_configs.model_config import ModelConfig
-from tng_control.config.model_configs.robot_config import RobotConfig, RobotOutputKeys
+from tng_control.rfm_control.config.model_configs.model_config import ModelConfig
+from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig, RobotOutputKeys
 
 
 class Gr00tConfig(ModelConfig):
@@ -56,11 +56,6 @@ class Gr00tUR5Config(Gr00tConfig):
 
     @property
     @override
-    def frame_id(self) -> str:
-        return "base_link"
-
-    @property
-    @override
     def joint_state_topic(self) -> str:
         return "/joint_states"
 
@@ -111,11 +106,6 @@ class Gr00tSO101Config(Gr00tConfig):
                 "video.global", (640, 480), "/global_front/image_raw/compressed", lambda x: np.array([x]),
             ),
         ]
-
-    @property
-    @override
-    def frame_id(self) -> str:
-        return "base_link"
 
     @property
     @override
@@ -197,3 +187,4 @@ class Gr00tSo101DualArmConfig(Gr00tSO101Config):
                 "video.global2", (640, 480), "/global2/image_raw/compressed", lambda x: np.array([x]),
             ),
         ]
+

@@ -6,12 +6,12 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 from control_msgs.msg import GripperCommand
 from builtin_interfaces.msg import Duration
 
-from tng_control.domain_model.robot_action import RobotAction
-from tng_control.action_adapter.action_port import ActionPort
+from tng_control.rfm_control.domain_model.robot_action import RobotAction
+from tng_control.rfm_control.action_adapter.action_port import ActionPort
 from tng_control.rfm_control.status_code import RfmControlStatusCode
-from tng_control.config.model_configs.model_config import ModelConfig
-from tng_control.action_adapter.joint_state_subscriber import JointStateSubscriber
-from tng_control.action_adapter.robot import Robot
+from tng_control.rfm_control.config.model_configs.model_config import ModelConfig
+from tng_control.rfm_control.action_adapter.joint_state_subscriber import JointStateSubscriber
+from tng_control.rfm_control.action_adapter.robot import Robot
 
 
 class FollowJointTrajectoryAdapter(ActionPort):
@@ -47,10 +47,10 @@ class FollowJointTrajectoryAdapter(ActionPort):
         for robot in self.robots:
             robot.set_actions(actions)
 
-        for i in range(self.config.action_horizon):
+        for t in range(self.config.action_horizon):
             futures = []
             for robot in self.robots:
-                action = robot.get_action(i)
+                action = robot.get_action(t)
                 if action is None:
                     continue
 

@@ -3,16 +3,16 @@ from typing import Literal
 
 from tng_control.rfm_control.model_adapter.observation_handler.joint_state_handler import JointStateHandler
 from tng_control.rfm_control.model_adapter.observation_handler.image_handler import ImageHandler
-from tng_control.action_adapter.robot import Robot
-from tng_control.action_adapter.joint_state_subscriber import JointStateSubscriber
+from tng_control.rfm_control.action_adapter.robot import Robot
+from tng_control.rfm_control.action_adapter.joint_state_subscriber import JointStateSubscriber
 from tng_control.rfm_control.model_adapter.model_clients.octo.octo_client import OctoClient
 from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_client import Gr00tClient
-from tng_control.config.model_configs.octo_config import OctoConfig, OctoUR5Config
-from tng_control.config.model_configs.gr00t_config import Gr00tConfig, Gr00tSO101Config, Gr00tUR5Config
+from tng_control.rfm_control.config.model_configs.octo_config import OctoConfig, OctoUR5Config
+from tng_control.rfm_control.config.model_configs.gr00t_config import Gr00tConfig, Gr00tSO101Config, Gr00tUR5Config
 from tng_control.rfm_control.model_adapter.mapper.joint_state_mapper import Gr00tJointStateMapper, Gr00tJointStateMapperRTC
 from tng_control.rfm_control.model_adapter.mapper.delta_endeffector_mapper import OctoDeltaEndeffectorMapper
-from tng_control.action_adapter.action_port import ActionPort
-from tng_control.action_adapter.follow_joint_trajectory_adapter import FollowJointTrajectoryAdapter
+from tng_control.rfm_control.action_adapter.action_port import ActionPort
+from tng_control.rfm_control.action_adapter.follow_joint_trajectory_adapter import FollowJointTrajectoryAdapter
 from tng_control.rfm_control.model_adapter.gr00t_adapter import Gr00tAdapter
 from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
 from tng_control.rfm_control.model_adapter.octo_adapter import OctoAdapter

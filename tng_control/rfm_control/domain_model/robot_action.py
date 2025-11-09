@@ -1,8 +1,8 @@
 from abc import ABC
 from attr import dataclass
 
-from tng_control.domain_model.arm_action import ArmAction
-from tng_control.domain_model.gripper_action import GripperAction
+from tng_control.rfm_control.domain_model.arm_action import ArmAction
+from tng_control.rfm_control.domain_model.gripper_action import GripperAction
 
 
 @dataclass(frozen=True)
@@ -11,3 +11,4 @@ class RobotAction(ABC):
     timestep_id: int
     arm_action: ArmAction
     gripper_action: GripperAction
+

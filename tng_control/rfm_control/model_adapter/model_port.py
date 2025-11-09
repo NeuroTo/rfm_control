@@ -3,8 +3,8 @@ from collections.abc import Sequence
 import numpy as np
 
 from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
-from tng_control.domain_model.robot_action import RobotAction
-from tng_control.config.model_configs.model_config import ModelConfig
+from tng_control.rfm_control.domain_model.robot_action import RobotAction
+from tng_control.rfm_control.config.model_configs.model_config import ModelConfig
 from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
 from tng_control.rfm_control.model_adapter.observation_handler.image_handler import ObservationHandler
 

@@ -2,7 +2,7 @@ from abc import abstractmethod
 from dataclasses import dataclass, field
 
 from tng_control.rfm_control.model_adapter.observation_handler.image_feature import ImageFeature
-from tng_control.config.model_configs.robot_config import RobotConfig
+from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
 from tng_robot_arms_shared import Ros2ControlJointConfig
 
 
@@ -35,11 +35,6 @@ class ModelConfig:
 
     @property
     @abstractmethod
-    def frame_id(self) -> str:
-        pass
-
-    @property
-    @abstractmethod
     def joint_state_topic(self) -> str:
         pass
 
@@ -52,3 +47,4 @@ class ModelConfig:
     @abstractmethod
     def time_between_goals(self) -> float:
         pass
+
