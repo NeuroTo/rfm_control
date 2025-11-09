@@ -4,7 +4,7 @@ from rclpy.node import Node
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory
 from typing_extensions import override
-from tng_control.action_adapter.action_executor.arm_action_executor import ArmActionExecutor
+from tng_control.action_executor.arm_action_executor import ArmActionExecutor
 
 
 class TrajectoryActionExecutor(ArmActionExecutor):
