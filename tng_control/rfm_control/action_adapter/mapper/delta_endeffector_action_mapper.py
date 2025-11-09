@@ -8,12 +8,12 @@ from typing_extensions import override
 from tng_octo.fk_solver import MoveitFKSolver
 from tng_octo.ik_solver import MoveitIKSolver
 
-from tng_control.action_adapter.mapper.pose_util import add_pose
+from tng_control.rfm_control.action_adapter.mapper.pose_util import add_pose
 from tng_control.rfm_control.model_adapter.mapper.pose_util import action_to_pose
-from tng_control.action_adapter.mapper.action_mapper import ActionMapper
-from tng_control.domain_model.arm_action import ArmAction
-from tng_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
-from tng_control.config.model_configs.robot_config import RobotConfig
+from tng_control.rfm_control.action_adapter.mapper.action_mapper import ActionMapper
+from tng_control.rfm_control.domain_model.arm_action import ArmAction
+from tng_control.rfm_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
+from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
 
 duration_between_goals: Duration = Duration(sec=0, nanosec=10**8)
 
@@ -54,3 +54,4 @@ class DeltaEndeffectorActionMapper(ActionMapper):
             duration: Duration = duration_between_goals) -> JointTrajectoryPoint | None:
         return self.ik_solver.get_joint_positions_from_pose(
             pose=pose, duration=duration, seed_robot_state=seed_robot_state, ik_link_name="tool0")
+

@@ -1,7 +1,7 @@
 from attr import dataclass
 import numpy as np
 
-from tng_control.domain_model.arm_action import ArmAction
+from tng_control.rfm_control.domain_model.arm_action import ArmAction
 
 
 @dataclass(frozen=True)

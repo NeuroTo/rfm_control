@@ -2,10 +2,10 @@ from collections.abc import Sequence
 from typing_extensions import override
 
 from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
-from tng_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
-from tng_control.domain_model.robot_action import RobotAction
-from tng_control.domain_model.synchronous_gripper_action import SynchronousGripperAction
-from tng_control.config.model_configs.robot_config import RobotConfig
+from tng_control.rfm_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
+from tng_control.rfm_control.domain_model.robot_action import RobotAction
+from tng_control.rfm_control.domain_model.synchronous_gripper_action import SynchronousGripperAction
+from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
 
 
 class Gr00tDeltaEndeffectorMapper(ModelOutputMapper):

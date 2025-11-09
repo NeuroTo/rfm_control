@@ -1,17 +1,19 @@
 import sys
 from typing import cast
+from collections.abc import Sequence
 
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.node import Node
 
 from tng_control.rfm_control.model_adapter.model_port import ModelPort
-from tng_control.action_adapter.action_port import ActionPort
+from tng_control.rfm_control.action_adapter.action_port import ActionPort
 from tng_control.rfm_control.model_adapter.adapter_provider import get_adapters, ConfigStrings
 from tng_control.rfm_control.status_code import RfmControlStatusCode
 from tng_control.rfm_control.exceptions import (
     ImageNotAvailableException, JointStatesNotAvailableException
 )
+from tng_control.rfm_control.domain_model.robot_action import RobotAction
 from tng_robot_arms_custom_interfaces.action import MoveFromPrompt
 
 
@@ -62,14 +64,11 @@ class RfmActionServer(Node):
 
     def _move_from_prompt(self, prompt: str) -> RfmControlStatusCode:
         try:
-            next_actions = self._model_adapter.get_action(prompt)
+            next_actions: Sequence[RobotAction] = self._model_adapter.get_action(prompt)
         except ImageNotAvailableException:
             return RfmControlStatusCode.IMAGES_UNAVAILABLE
         except JointStatesNotAvailableException:
             return RfmControlStatusCode.JOINTS_STATES_UNAVAILABLE
-
-        if next_actions is None or None in next_actions:
-            return RfmControlStatusCode.FAILURE
 
         return self._action_port.move(next_actions, self)
 

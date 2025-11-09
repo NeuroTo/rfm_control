@@ -4,11 +4,11 @@ from attr import dataclass
 from tng_control.action_executor.gripper_action_executor import GripperActionExecutor
 from tng_control.action_executor.trajectory_action_executor import TrajectoryActionExecutor
 from tng_control.action_executor.arm_action_executor import ArmActionExecutor
-from tng_control.action_adapter.mapper.absolute_joint_action_mapper import AbsoluteJointActionMapper
-from tng_control.action_adapter.mapper.action_mapper import ActionMapper
-from tng_control.config.model_configs.robot_config import RobotConfig
-from tng_control.action_adapter.mapper.delta_endeffector_action_mapper import DeltaEndeffectorActionMapper
-from tng_control.domain_model.robot_action import RobotAction
+from tng_control.rfm_control.action_adapter.mapper.absolute_joint_action_mapper import AbsoluteJointActionMapper
+from tng_control.rfm_control.action_adapter.mapper.action_mapper import ActionMapper
+from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
+from tng_control.rfm_control.action_adapter.mapper.delta_endeffector_action_mapper import DeltaEndeffectorActionMapper
+from tng_control.rfm_control.domain_model.robot_action import RobotAction
 
 
 @dataclass
@@ -46,3 +46,4 @@ class Robot():
     @classmethod
     def from_robot_config_delta_action(cls, robot_config: RobotConfig):
         return Robot.from_robot_config(robot_config, DeltaEndeffectorActionMapper(robot_config))
+
