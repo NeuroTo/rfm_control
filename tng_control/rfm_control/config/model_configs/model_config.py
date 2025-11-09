@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from dataclasses import dataclass, field
 
-from tng_control.rfm_control.model_adapter.observation_handler.image_feature import ImageFeature
+from tng_control.rfm_control.observation_handler.image_feature import ImageFeature
 from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
 from tng_robot_arms_shared import Ros2ControlJointConfig
 

@@ -39,7 +39,7 @@ class RfmActionServer(Node):
             self.move_from_prompt_callback
         )
 
-        action_adapter.joint_state_subscriber.create_subscription(self)
+        action_adapter.joint_state_handler.create_subscription(self)
         for observation_handler in model_adapter.observation_handler:
             observation_handler.create_subscription(self)
 

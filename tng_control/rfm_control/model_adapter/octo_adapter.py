@@ -6,7 +6,7 @@ from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import Mod
 from tng_control.rfm_control.domain_model.robot_action import RobotAction
 from tng_control.rfm_control.model_adapter.model_port import ModelPort
 from tng_control.rfm_control.model_adapter.model_clients.octo.octo_model_client import OctoModelClient, OctoAction
-from tng_control.rfm_control.model_adapter.observation_handler.image_handler import ObservationHandler
+from tng_control.rfm_control.observation_handler.observation_handler import ObservationHandler
 
 
 class OctoAdapter(ModelPort):
