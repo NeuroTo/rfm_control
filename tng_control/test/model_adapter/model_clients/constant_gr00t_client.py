@@ -3,10 +3,10 @@ import numpy as np
 
 from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_robot_inference_client import RobotInferenceClient
 from tng_control.rfm_control.config.model_configs.gr00t_config import Gr00tConfig
-from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
+from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient, Gr00tAction
 
 
-class ConstantGr00tClient(ModelClient):
+class ConstantGr00tClient(Gr00tModelClient):
 
     def __init__(self, config: Gr00tConfig):
         self.start_time = time.time()
@@ -26,7 +26,7 @@ class ConstantGr00tClient(ModelClient):
         ])
         self.duration = 7
 
-    def get_action(self, observation: dict[str, np.ndarray], prompt: str) -> dict[str, np.ndarray]:
+    def get_action(self, observation: dict[str, np.ndarray], prompt: str) -> Gr00tAction:
         if not self.started:
             self.start_time = time.time()
             self.started = True
@@ -42,7 +42,7 @@ class ConstantGr00tClient(ModelClient):
             "action.gripper_velocity": np.array([50])}
 
 
-class ConstantGr00tRTCClient(ModelClient):
+class ConstantGr00tRTCClient(Gr00tModelClient):
     """Policy client implementation for GR00T robot models using configuration objects."""
 
     def __init__(self, config: Gr00tConfig):
@@ -64,7 +64,7 @@ class ConstantGr00tRTCClient(ModelClient):
         ])
         self.duration = 3
 
-    def get_action(self, observation: dict[str, np.ndarray], prompt: str) -> dict[str, np.ndarray]:
+    def get_action(self, observation: dict[str, np.ndarray], prompt: str) -> Gr00tAction:
 
         if not self.started:
             self.start_time = time.time()

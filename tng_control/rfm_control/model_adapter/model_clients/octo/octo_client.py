@@ -6,10 +6,10 @@ from typing_extensions import override
 from octo.model.octo_model import OctoModel
 
 from tng_control.rfm_control.config.model_configs.octo_config import OctoConfig
-from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
+from tng_control.rfm_control.model_adapter.model_clients.octo.octo_model_client import OctoModelClient, OctoAction
 
 
-class OctoClient(ModelClient):
+class OctoClient(OctoModelClient):
 
     def __init__(self, config: OctoConfig):
         os.environ['TOKENIZERS_PARALLELISM'] = 'false'
@@ -19,7 +19,7 @@ class OctoClient(ModelClient):
 
     @override
     def get_action(self, observation: dict[str, Any],
-                   prompt: str) -> list[list[list[float]]]:
+                   prompt: str) -> OctoAction:
 
         return self.model.sample_actions(
             observation,

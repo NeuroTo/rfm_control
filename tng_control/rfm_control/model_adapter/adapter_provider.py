@@ -17,7 +17,8 @@ from tng_control.rfm_control.model_adapter.gr00t_adapter import Gr00tAdapter
 from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
 from tng_control.rfm_control.model_adapter.octo_adapter import OctoAdapter
 from tng_control.rfm_control.model_adapter.model_port import ModelPort
-from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
+from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient
+from tng_control.rfm_control.model_adapter.model_clients.octo.octo_model_client import OctoModelClient
 from tng_control.test.model_adapter.model_clients.constant_gr00t_client import ConstantGr00tRTCClient
 from tng_control.test.model_adapter.model_clients.constant_gr00t_client_dual import ConstantDualGr00tClient
 from tng_control.test.config.model_configs.gr00t_config import ConstGr00t, ConstGr00tSo101DualArmConfig
@@ -44,7 +45,7 @@ class Gr00tAdapterFactory:
         return [Robot.from_robot_config_delta_action(robot) for robot in self.config.robot_configs]
 
     def _create(self, model_output_mapper: ModelOutputMapper,
-                model_client: ModelClient) -> tuple[ModelPort, ActionPort]:
+                model_client: Gr00tModelClient) -> tuple[ModelPort, ActionPort]:
 
         image_handler = ImageHandler(self.config.image_features)
         joint_state_handler = JointStateHandler(
@@ -80,13 +81,13 @@ class OctoAdapterFactory:
     def __init__(self, config: OctoConfig):
         self.config = config
 
-    def _create(self, model_client: ModelClient) -> tuple[ModelPort, ActionPort]:
+    def _create(self, model_client: OctoModelClient) -> tuple[ModelPort, ActionPort]:
         image_handler = ImageHandler(self.config.image_features)
         joint_state_handler = JointStateHandler(
             self.config.robot_configs, self.config.joint_state_topic)
         joint_state_subscriber = JointStateSubscriber(self.config.joint_state_topic)
         model_output_mapper = OctoDeltaEndeffectorMapper(self.config.robot_configs)
-        model_adapter = OctoAdapter(self.config, model_client, model_output_mapper, [image_handler])
+        model_adapter = OctoAdapter(model_client, model_output_mapper, [image_handler])
         robots = [Robot.from_robot_config_delta_action(robot_config)
                   for robot_config in self.config.robot_configs]
         action_adapter = FollowJointTrajectoryAdapter(robots, joint_state_subscriber)

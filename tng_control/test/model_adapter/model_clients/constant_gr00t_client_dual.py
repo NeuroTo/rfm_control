@@ -1,12 +1,11 @@
 import numpy as np
 import time
 
-from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_robot_inference_client import RobotInferenceClient
 from tng_control.rfm_control.config.model_configs.gr00t_config import Gr00tConfig
-from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
+from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient, Gr00tAction
 
 
-class ConstantDualGr00tClient(ModelClient):
+class ConstantDualGr00tClient(Gr00tModelClient):
     """Policy client implementation for GR00T robot models using configuration objects."""
 
     def __init__(self, config: Gr00tConfig):
@@ -16,7 +15,6 @@ class ConstantDualGr00tClient(ModelClient):
         Args:
             config: Configuration object for the policy client.
         """
-        self.policy_client = RobotInferenceClient(port=config.port)
         # Store the creation time
         self.start_time = time.time()
         self.started = False
@@ -37,7 +35,7 @@ class ConstantDualGr00tClient(ModelClient):
         ]
         self.duration = 7
 
-    def get_action(self, observation: dict[str, np.ndarray], prompt: str) -> dict[str, np.ndarray]:
+    def get_action(self, observation: dict[str, np.ndarray], prompt: str) -> Gr00tAction:
         """Get action from GR00T model."""
         # Calculate elapsed time since creation
         if not self.started:
