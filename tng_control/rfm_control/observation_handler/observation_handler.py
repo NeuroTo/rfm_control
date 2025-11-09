@@ -11,3 +11,4 @@ class ObservationHandler(ABC):
     @abstractmethod
     def create_subscription(self, node: Node) -> None:
         pass
+

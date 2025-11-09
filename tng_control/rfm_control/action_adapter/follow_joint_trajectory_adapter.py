@@ -9,7 +9,7 @@ from builtin_interfaces.msg import Duration
 from tng_control.rfm_control.domain_model.robot_action import RobotAction
 from tng_control.rfm_control.action_adapter.action_port import ActionPort
 from tng_control.rfm_control.status_code import RfmControlStatusCode
-from tng_control.rfm_control.action_adapter.joint_state_subscriber import JointStateSubscriber
+from tng_control.rfm_control.observation_handler.joint_state_handler import JointStateHandler
 from tng_control.rfm_control.action_adapter.robot import Robot
 
 
@@ -26,18 +26,18 @@ class FollowJointTrajectoryAdapter(ActionPort):
 
     @property
     @override
-    def joint_state_subscriber(self) -> JointStateSubscriber:
-        return self._joint_state_subscriber
+    def joint_state_handler(self) -> JointStateHandler:
+        return self._joint_state_handler
 
-    @joint_state_subscriber.setter
-    def joint_state_subscriber(self, value: JointStateSubscriber):
-        self._joint_state_subscriber = value
+    @joint_state_handler.setter
+    def joint_state_handler(self, value: JointStateHandler):
+        self._joint_state_handler = value
 
     def __init__(
             self, robots: Sequence[Robot],
-            joint_state_subscriber: JointStateSubscriber):
+            joint_state_handler: JointStateHandler):
         self.robots = robots
-        self.joint_state_subscriber = joint_state_subscriber
+        self.joint_state_handler = joint_state_handler
 
     @override
     def move(self, node: Node, actions: Sequence[RobotAction], action_execution_horizon: int) -> RfmControlStatusCode:
@@ -53,7 +53,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
                     continue
 
                 trajectory_point = robot.action_mapper.action_to_joint_trajectory_point(
-                    action.arm_action, self.joint_state_subscriber.get_current_joint_state())
+                    action.arm_action, self.joint_state_handler.get_current_joint_state())
 
                 if trajectory_point is None:
                     return RfmControlStatusCode.ACTION_MAPPING_FAILED

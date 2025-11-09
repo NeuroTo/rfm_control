@@ -3,7 +3,7 @@ from typing_extensions import override
 
 from sensor_msgs.msg import Image
 
-from tng_control.rfm_control.model_adapter.observation_handler.image_feature import ImageFeature
+from tng_control.rfm_control.observation_handler.image_feature import ImageFeature
 from tng_control.rfm_control.config.model_configs.model_config import ModelConfig
 from tng_control.rfm_control.config.model_configs.robot_config import RobotOutputKeys, RobotConfig
 
