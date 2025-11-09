@@ -1,14 +1,17 @@
 from typing import Any
-from tng_control.rfm_control.model_adapter.model_clients.model_client import ModelClient
+from typing_extensions import override
+
+from tng_control.rfm_control.model_adapter.model_clients.octo.octo_model_client import OctoModelClient, OctoAction
 
 
-class ConstantOctoClient(ModelClient):
+class ConstantOctoClient(OctoModelClient):
     constant_action = [[[0, 0, -0.1, 0, 0, 0, 0.2],
                         [0, 0, -0.1, 0, 0, 0, 0.2],
                         [0.1, -0.1, -0.1, 0, 0, 0, 0.2],
                         [0.1, -0.1, -0.1, 0, 0, 0, 0.2]]]
 
+    @override
     def get_action(self, observation: dict[str, Any],
-                   prompt: str) -> list[list[list[float]]]:
+                   prompt: str) -> OctoAction:
 
         return self.constant_action

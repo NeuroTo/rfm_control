@@ -1,14 +1,17 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Generic, TypeVar
 
 
-class ModelClient(ABC):
+ModelActionType = TypeVar("ModelActionType")
+
+
+class ModelClient(ABC, Generic[ModelActionType]):
     """Common Interface for all polices.
     The policy client is responsible for the communication with the inference backend.
     It receives an observation and a prompt and returns an action.
-    The format of the observatio and the action depends on the model.
+    The format of the returned action depends on the model and is defined by the ModelActionType parameter.
     """
 
     @abstractmethod
-    def get_action(self, observation: dict[str, Any], prompt: str) -> dict[str, Any]:
+    def get_action(self, observation: dict[str, Any], prompt: str) -> ModelActionType:
         pass

@@ -4,8 +4,7 @@ from typing_extensions import override
 from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
 from tng_control.rfm_control.domain_model.robot_action import RobotAction
 from tng_control.rfm_control.model_adapter.model_port import ModelPort, ObservationHandler
-from tng_control.rfm_control.config.model_configs.gr00t_config import Gr00tConfig
-from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_client import Gr00tClient
+from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient
 
 
 class Gr00tAdapter(ModelPort):
@@ -17,10 +16,10 @@ class Gr00tAdapter(ModelPort):
 
     @property
     @override
-    def model_client(self) -> Gr00tClient:
+    def model_client(self) -> Gr00tModelClient:
         return self._model_client
 
-    def __init__(self, model_client: Gr00tClient,
+    def __init__(self, model_client: Gr00tModelClient,
                  model_output_mapper: ModelOutputMapper,
                  observation_handler: Sequence[ObservationHandler]) -> None:
         super().__init__(observation_handler)

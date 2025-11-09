@@ -28,7 +28,7 @@ class RfmActionServer(Node):
             self, model_adapter: ModelPort, action_adapter: ActionPort) -> None:
         super().__init__('rfm_action_server')
 
-        self._model_adapter: ModelPort = model_adapter
+        self._model_port: ModelPort = model_adapter
         self._action_port: ActionPort = action_adapter
 
         # Action server
@@ -65,7 +65,7 @@ class RfmActionServer(Node):
 
     def _move_from_prompt(self, prompt: str) -> RfmControlStatusCode:
         try:
-            next_actions: Sequence[RobotAction] = self._model_adapter.get_action(prompt)
+            next_actions: Sequence[RobotAction] = self._model_port.get_action(prompt)
         except ImageNotAvailableException:
             return RfmControlStatusCode.IMAGES_UNAVAILABLE
         except JointStatesNotAvailableException:
