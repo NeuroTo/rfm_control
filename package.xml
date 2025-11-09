@@ -3,7 +3,9 @@
 <package format="3">
   <name>tng_control</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>
+    ROS 2 Python package for model-based robot arm and gripper control, providing interfaces to integrate robot action executors and rfm control.
+  </description>
   <maintainer email="markus.wuenstel@tngtech.com">Markus Wünstel</maintainer>
   <license>Apache-2.0</license>
 

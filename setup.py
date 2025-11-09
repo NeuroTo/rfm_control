@@ -18,7 +18,7 @@ setup(
     zip_safe=True,
     maintainer='Markus Wünstel',
     maintainer_email='markus.wuenstel@tngtech.com',
-    description='TODO: Package description',
+    description='ROS 2 Python package for model-based robot arm and gripper control, providing interfaces to integrate robot action executors and rfm control.',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
