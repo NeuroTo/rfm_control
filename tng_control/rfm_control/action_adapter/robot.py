@@ -14,7 +14,7 @@ from tng_control.rfm_control.domain_model.robot_action import RobotAction
 @dataclass
 class Robot():
     action_mapper: ActionMapper
-    robot_action_executor: ArmActionExecutor
+    arm_action_executor: ArmActionExecutor
     gripper_action_executor: GripperActionExecutor
     robot_config: RobotConfig
 
@@ -35,11 +35,11 @@ class Robot():
             cls, robot_config: RobotConfig, action_mapper: ActionMapper | None = None):
         if action_mapper is None:
             action_mapper = AbsoluteJointActionMapper(robot_config.arm_keys.joint_names)
-        robot_action_executor = TrajectoryActionExecutor(
+        arm_action_executor = TrajectoryActionExecutor(
             robot_config.arm_keys.topic_name, robot_config.arm_keys.joint_names)
         gripper_executor = GripperActionExecutor(robot_config.gripper_keys.topic_name)
         return cls(action_mapper=action_mapper,
-                   robot_action_executor=robot_action_executor,
+                   arm_action_executor=arm_action_executor,
                    gripper_action_executor=gripper_executor,
                    robot_config=robot_config)
 
