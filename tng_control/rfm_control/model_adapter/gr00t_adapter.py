@@ -20,10 +20,10 @@ class Gr00tAdapter(ModelPort):
     def model_client(self) -> Gr00tClient:
         return self._model_client
 
-    def __init__(self, config: Gr00tConfig, model_client: Gr00tClient,
+    def __init__(self, model_client: Gr00tClient,
                  model_output_mapper: ModelOutputMapper,
                  observation_handler: Sequence[ObservationHandler]) -> None:
-        super().__init__(config, observation_handler)
+        super().__init__(observation_handler)
         self._model_output_mapper = model_output_mapper
         self._model_client = model_client
 

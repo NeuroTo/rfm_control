@@ -21,10 +21,10 @@ class OctoAdapter(ModelPort):
     def model_client(self) -> OctoClient:
         return self._model_client
 
-    def __init__(self, config: OctoConfig, model_client: OctoClient,
+    def __init__(self, model_client: OctoClient,
                  model_output_mapper: ModelOutputMapper,
                  observation_handler: Sequence[ObservationHandler]) -> None:
-        super().__init__(config, observation_handler)
+        super().__init__(observation_handler)
         self._model_output_mapper = model_output_mapper
         self._model_client = model_client
 

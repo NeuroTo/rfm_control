@@ -51,8 +51,7 @@ class Gr00tAdapterFactory:
             self.config.robot_configs, self.config.joint_state_topic)
         joint_state_subscriber = JointStateSubscriber(self.config.joint_state_topic)
         robots = self._create_robots()
-        model_adapter = Gr00tAdapter(self.config, model_client, model_output_mapper, [
-                                     image_handler, joint_state_handler])
+        model_adapter = Gr00tAdapter(model_client, model_output_mapper, [image_handler, joint_state_handler])
         action_adapter = FollowJointTrajectoryAdapter(robots, joint_state_subscriber)
 
         return (model_adapter, action_adapter)
