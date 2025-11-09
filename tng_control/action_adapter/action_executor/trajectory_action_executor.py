@@ -4,7 +4,7 @@ from rclpy.node import Node
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory
 from typing_extensions import override
-from tng_control.action_adapter.action_executor.robot_action_executor import ArmActionExecutor
+from tng_control.action_adapter.action_executor.arm_action_executor import ArmActionExecutor
 
 
 class TrajectoryActionExecutor(ArmActionExecutor):
@@ -40,8 +40,9 @@ class TrajectoryActionExecutor(ArmActionExecutor):
         if result.result() is None or not result.result().accepted:
             raise RuntimeError("follow joint trajectory goal handle rejected")
         future = result.result().get_result_async()
-        future.add_done_callback(lambda x: TrajectoryActionExecutor._result_done_cb(
-            x, overall_future))
+        future.add_done_callback(
+            lambda x: TrajectoryActionExecutor._result_done_cb(x, overall_future)
+        )
 
     @staticmethod
     def _result_done_cb(result_future, overall_future: Future):
