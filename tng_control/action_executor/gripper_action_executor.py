@@ -1,22 +1,23 @@
+from typing_extensions import override
+
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from rclpy.task import Future
 from control_msgs.action import GripperCommand as GripperCommandAction
 from control_msgs.msg import GripperCommand as GripperCommandMessage
+from tng_control.action_executor.arm_action_executor import MotionExecutor
 
 
-class GripperActionExecutor():
+class GripperActionExecutor(MotionExecutor[GripperCommandMessage]):
 
     def __init__(self, topic_name: str):
-        self.topic_name = topic_name
+        self._topic_name = topic_name
         self._action_client = None
 
-    def execute_gripper_action(
-            self, action: GripperCommandMessage, node: Node) -> Future:
+    @override
+    def execute_async(self, command: GripperCommandMessage, node: Node) -> Future:
         overall_future = Future()
-        goal: GripperCommandAction.Goal = GripperCommandAction.Goal()
-        goal.command = action
-
+        goal: GripperCommandAction.Goal = GripperCommandAction.Goal(command=command)
         accepted_future: Future = self._get_action_client(node).send_goal_async(goal)
         accepted_future.add_done_callback(
             lambda x: GripperActionExecutor._done_callback(x, overall_future))
@@ -25,7 +26,7 @@ class GripperActionExecutor():
     def _get_action_client(self, node: Node) -> ActionClient:
         if self._action_client is None:
             self._action_client = ActionClient(
-                node, GripperCommandAction, self.topic_name
+                node, GripperCommandAction, self._topic_name
             )
         return self._action_client
 

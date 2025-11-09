@@ -3,7 +3,7 @@ from typing_extensions import override
 import rclpy
 from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectoryPoint
-from control_msgs.msg import GripperCommand
+from control_msgs.msg import GripperCommand as GripperCommandMessage
 from builtin_interfaces.msg import Duration
 
 from tng_control.rfm_control.domain_model.robot_action import RobotAction
@@ -60,10 +60,10 @@ class FollowJointTrajectoryAdapter(ActionPort):
                 self._add_timestamps_to_trajectory(trajectory_point, action.arm_action.time_between_goals)
                 gripper_action = action.gripper_action
 
-                robot_action_future = robot.arm_action_executor.execute_action(
+                robot_action_future = robot.arm_action_executor.execute_async(
                     [trajectory_point], node)
-                gripper_action_future = robot.gripper_action_executor.execute_gripper_action(
-                    GripperCommand(position=gripper_action.gripper_aperture, max_effort=2.0),
+                gripper_action_future = robot.gripper_action_executor.execute_async(
+                    GripperCommandMessage(position=gripper_action.gripper_aperture, max_effort=2.0),
                     node)
 
                 futures.append(robot_action_future)

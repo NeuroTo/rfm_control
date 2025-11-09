@@ -2,8 +2,8 @@ from collections.abc import Sequence
 from attr import dataclass
 
 from tng_control.action_executor.gripper_action_executor import GripperActionExecutor
-from tng_control.action_executor.trajectory_action_executor import TrajectoryActionExecutor
-from tng_control.action_executor.arm_action_executor import ArmActionExecutor
+from tng_control.action_executor.joint_trajectory_action_executor import JointTrajectoryActionExecutor
+from tng_control.action_executor.arm_action_executor import MotionExecutor
 from tng_control.rfm_control.action_adapter.mapper.absolute_joint_action_mapper import AbsoluteJointActionMapper
 from tng_control.rfm_control.action_adapter.mapper.action_mapper import ActionMapper
 from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
@@ -14,7 +14,7 @@ from tng_control.rfm_control.domain_model.robot_action import RobotAction
 @dataclass
 class Robot():
     action_mapper: ActionMapper
-    arm_action_executor: ArmActionExecutor
+    arm_action_executor: MotionExecutor
     gripper_action_executor: GripperActionExecutor
     robot_config: RobotConfig
 
@@ -35,8 +35,7 @@ class Robot():
             cls, robot_config: RobotConfig, action_mapper: ActionMapper | None = None):
         if action_mapper is None:
             action_mapper = AbsoluteJointActionMapper(robot_config.arm_keys.joint_names)
-        arm_action_executor = TrajectoryActionExecutor(
-            robot_config.arm_keys.topic_name, robot_config.arm_keys.joint_names)
+        arm_action_executor = JointTrajectoryActionExecutor(robot_config.arm_keys.topic_name)
         gripper_executor = GripperActionExecutor(robot_config.gripper_keys.topic_name)
         return cls(action_mapper=action_mapper,
                    arm_action_executor=arm_action_executor,
