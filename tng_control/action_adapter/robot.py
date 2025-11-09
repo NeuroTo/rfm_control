@@ -1,9 +1,9 @@
 from collections.abc import Sequence
 from attr import dataclass
 
-from tng_control.action_adapter.action_executor.gripper_action_executor import GripperActionExecutor
-from tng_control.action_adapter.action_executor.trajectory_action_executor import TrajectoryActionExecutor
-from tng_control.action_adapter.action_executor.arm_action_executor import ArmActionExecutor
+from tng_control.action_executor.gripper_action_executor import GripperActionExecutor
+from tng_control.action_executor.trajectory_action_executor import TrajectoryActionExecutor
+from tng_control.action_executor.arm_action_executor import ArmActionExecutor
 from tng_control.action_adapter.mapper.absolute_joint_action_mapper import AbsoluteJointActionMapper
 from tng_control.action_adapter.mapper.action_mapper import ActionMapper
 from tng_control.config.model_configs.robot_config import RobotConfig
