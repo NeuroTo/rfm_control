@@ -3,7 +3,7 @@ from rclpy.node import Node
 from rclpy.publisher import Publisher
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from typing_extensions import override
-from tng_control.action_adapter.action_executor.robot_action_executor import ArmActionExecutor
+from tng_control.action_adapter.action_executor.arm_action_executor import ArmActionExecutor
 from rclpy.impl import rcutils_logger
 
 
