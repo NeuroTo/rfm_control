@@ -38,13 +38,3 @@ class ModelConfig:
     def joint_state_topic(self) -> str:
         pass
 
-    @property
-    @abstractmethod
-    def action_horizon(self) -> int:
-        pass
-
-    @property
-    @abstractmethod
-    def time_between_goals(self) -> float:
-        pass
-

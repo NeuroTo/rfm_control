@@ -59,16 +59,6 @@ class Gr00tUR5Config(Gr00tConfig):
     def joint_state_topic(self) -> str:
         return "/joint_states"
 
-    @property
-    @override
-    def action_horizon(self) -> int:
-        return 8
-
-    @property
-    @override
-    def time_between_goals(self) -> float:
-        return 0.1
-
 
 class Gr00tSO101Config(Gr00tConfig):
 
@@ -111,16 +101,6 @@ class Gr00tSO101Config(Gr00tConfig):
     @override
     def joint_state_topic(self) -> str:
         return "/joint_states"
-
-    @property
-    @override
-    def action_horizon(self) -> int:
-        return 8
-
-    @property
-    @override
-    def time_between_goals(self) -> float:
-        return 0.5
 
 
 class Gr00tSo101DualArmConfig(Gr00tSO101Config):
