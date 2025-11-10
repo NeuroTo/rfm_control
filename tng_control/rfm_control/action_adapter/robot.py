@@ -14,6 +14,7 @@ from tng_control.rfm_control.domain_model.robot_action import RobotAction
 @dataclass
 class Robot():
     action_mapper: ActionMapper
+    # TODO: try to handle arm_action_executor and gripper_action_executor in a more generic way.
     arm_action_executor: MotionExecutor
     gripper_action_executor: GripperActionExecutor
     robot_config: RobotConfig

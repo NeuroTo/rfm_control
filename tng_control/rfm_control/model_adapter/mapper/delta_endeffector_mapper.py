@@ -1,5 +1,6 @@
 from collections.abc import Sequence
 from typing_extensions import override
+import numpy as np
 
 from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
 from tng_control.rfm_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
@@ -18,10 +19,13 @@ class Gr00tDeltaEndeffectorMapper(ModelOutputMapper[Gr00tAction]):
     @override
     def to_action(self, model_output: Gr00tAction) -> Sequence[RobotAction]:
         return [RobotAction(
-            robot_config.prefix,
-            i,
-            DeltaEndeffectorAction(robot_action[:3], robot_action[3:6]),
-            SynchronousGripperAction(gripper)
+            robot_prefix=robot_config.prefix,
+            timestep_id=i,
+            arm_action=DeltaEndeffectorAction(
+                position=robot_action[:3],
+                orientation=robot_action[3:6],
+                time_between_goals=robot_config.time_between_goals),
+            gripper_action=SynchronousGripperAction(gripper_aperture=gripper)
         )
             for robot_config in self.robots
             for i, (robot_action, gripper) in enumerate(zip(model_output[robot_config.arm_keys.output_position_key],
@@ -36,12 +40,13 @@ class OctoDeltaEndeffectorMapper(ModelOutputMapper[OctoAction]):
     @override
     def to_action(self, model_output: OctoAction) -> Sequence[RobotAction]:
         return [RobotAction(
-            self.robot.prefix,
-            i,
-            DeltaEndeffectorAction(
-                model_output[0][i][:3],
-                model_output[0][i][3:6]),
-            SynchronousGripperAction(self._parse_gripper(model_output[0][i][6]))
+            robot_prefix=self.robot.prefix,
+            timestep_id=i,
+            arm_action=DeltaEndeffectorAction(
+                position=np.array(model_output[0][i][:3]),
+                orientation=np.array(model_output[0][i][3:6]),
+                time_between_goals=self.robot.time_between_goals),
+            gripper_action=SynchronousGripperAction(self._parse_gripper(model_output[0][i][6]))
         )
             for i in range(len(model_output[0]))]
 

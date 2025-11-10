@@ -27,7 +27,7 @@ class JointStateHandler(ObservationHandler):
         self.joint_state_topic = robots[0].joint_state_topic
         
         # Validate all robots use the same joint_state_topic
-        # TODO: implement real multi-joint state topic support for different joint state topics of different robots.
+        # TODO: implement real multi-joint state topic support for different joint state topics of different robots analogously to the image handler.
         for robot in robots:
             if robot.joint_state_topic != self.joint_state_topic:
                 raise ValueError(
