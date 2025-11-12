@@ -4,7 +4,7 @@ from typing import Generic
 from sensor_msgs.msg import JointState
 
 from tng_control.rfm_control.domain_model.arm_action import ArmAction
-from tng_control.action_executor.arm_action_executor import CommandType
+from tng_control.action_executor.motion_executor import CommandType
 
 
 class ActionMapper(ABC, Generic[CommandType]):

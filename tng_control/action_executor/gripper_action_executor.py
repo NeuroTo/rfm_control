@@ -5,7 +5,7 @@ from rclpy.action import ActionClient
 from rclpy.task import Future
 from control_msgs.action import GripperCommand as GripperCommandAction
 from control_msgs.msg import GripperCommand as GripperCommandMessage
-from tng_control.action_executor.arm_action_executor import MotionExecutor
+from tng_control.action_executor.motion_executor import MotionExecutor
 
 
 class GripperActionExecutor(MotionExecutor[GripperCommandMessage]):
