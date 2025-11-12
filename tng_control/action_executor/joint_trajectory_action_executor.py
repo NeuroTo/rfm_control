@@ -4,7 +4,7 @@ from rclpy.node import Node
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory
 from typing_extensions import override
-from tng_control.action_executor.arm_action_executor import MotionExecutor
+from tng_control.action_executor.motion_executor import MotionExecutor
 
 
 class JointTrajectoryActionExecutor(MotionExecutor[JointTrajectory]):
@@ -27,6 +27,7 @@ class JointTrajectoryActionExecutor(MotionExecutor[JointTrajectory]):
         return overall_future
 
     def _get_action_client(self, node: Node) -> ActionClient:
+        # TODO: why not initialize the action client in the constructor?
         if self._action_client is None:
             self._action_client = ActionClient(
                 node, FollowJointTrajectory, self._topic_name

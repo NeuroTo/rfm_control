@@ -9,7 +9,7 @@ from trajectory_msgs.msg import JointTrajectory
 
 from tng_control.action_executor.gripper_action_executor import GripperActionExecutor
 from tng_control.action_executor.joint_trajectory_action_executor import JointTrajectoryActionExecutor
-from tng_control.action_executor.arm_action_executor import MotionExecutor, CommandType
+from tng_control.action_executor.motion_executor import MotionExecutor, CommandType
 from tng_control.rfm_control.action_adapter.mapper.absolute_joint_action_mapper import AbsoluteJointActionMapper
 from tng_control.rfm_control.action_adapter.mapper.action_mapper import ActionMapper
 from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
