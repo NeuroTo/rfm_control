@@ -1,0 +1,216 @@
+@startuml current_architecture
+
+class "RfmActionServer" as RfmActionServer {
+  _model_port : ModelPort
+  _action_port : ActionPort
+  move_from_prompt_callback(goal_handle: MoveFromPrompt.Goal) -> MoveFromPrompt.Result
+  _move_from_prompt(prompt: str) -> RfmControlStatusCode
+}
+
+package "Model Adapter" {
+  abstract class "ModelPort" as ModelPort {
+    _observation_handler : Sequence[ObservationHandler]
+    {abstract}model_client : ModelClient[ModelActionType]
+    {abstract}model_output_mapper : ModelOutputMapper[ModelOutputType]
+    observation_handler : Sequence[ObservationHandler]
+    {abstract}get_action(prompt: str) -> Sequence[RobotAction]
+    get_concat_observation() -> dict[str, np.ndarray]
+  }
+  
+  abstract class "ModelClient<ModelActionType>" as ModelClient {
+    {abstract}get_action(observation: dict[str, Any], prompt: str) -> ModelActionType
+  }
+  
+  abstract class "Gr00tModelClient" as Gr00tModelClient {
+    <<type alias>>
+    Gr00tAction = dict[str, np.ndarray]
+  }
+  
+  abstract class "OctoModelClient" as OctoModelClient {
+    <<type alias>>
+    OctoAction = list[list[list[float]]]
+  }
+  
+  abstract class "ModelOutputMapper<ModelOutputType>" as ModelOutputMapper {
+    {abstract}to_action(model_output: ModelOutputType) -> Sequence[RobotAction]
+  }
+}
+
+package "Observation Handler" {
+  abstract class "ObservationHandler" as ObservationHandler {
+    {abstract}get_observation_dict() -> dict[str, np.ndarray]
+    {abstract}create_subscription(node: Node) -> None
+  }
+  
+  class "ImageHandler" as ImageHandler {
+    get_observation_dict() -> dict[str, np.ndarray]
+    create_subscription(node: Node) -> None
+  }
+  
+  class "JointStateHandler" as JointStateHandler {
+    get_observation_dict() -> dict[str, np.ndarray]
+    get_current_joint_state() -> JointState
+    create_subscription(node: Node) -> None
+  }
+}
+
+package "Action Adapter" {
+  abstract class "ActionPort" as ActionPort {
+    {abstract}robots : Sequence[Robot]
+    {abstract}joint_state_handler : JointStateHandler
+    {abstract}move(node: Node, actions: Sequence[RobotAction], action_execution_horizon: int) -> RfmControlStatusCode
+  }
+  
+  class "Robot<CommandType>" as Robot {
+    action_mapper : ActionMapper<CommandType>
+    arm_action_executor : MotionExecutor<CommandType>
+    gripper_action_executor : GripperActionExecutor
+    robot_config : RobotConfig
+    _current_actions : dict[int, RobotAction]
+    set_actions(actions: Sequence[RobotAction]) -> None
+    get_action(timestep: int) -> RobotAction | None
+    {static}from_robot_config(robot_config: RobotConfig) -> Robot<JointTrajectory>
+    {static}from_robot_config_delta_action(robot_config: RobotConfig) -> Robot<JointTrajectory>
+  }
+  
+  abstract class "ActionMapper<CommandType>" as ActionMapper {
+    {abstract}map_action_to_executor_input(action: ArmAction, state: JointState | None) -> CommandType
+  }
+  
+  note right of ActionMapper
+    CommandType is defined in MotionExecutor and represents
+    the command format expected by the executor
+    (e.g., JointTrajectory for FollowJointTrajectory controller).
+    
+    state is optional: stateless mappers
+    (e.g., AbsoluteJointActionMapper) don't need it,
+    stateful mappers (e.g., DeltaEndeffectorActionMapper
+    with IK) require it.
+  end note
+}
+
+package "Action Executor" {
+  abstract class "MotionExecutor<CommandType>" as MotionExecutor {
+    {abstract}execute_async(command: CommandType, node: Node) -> Future
+    execute_sync(command: CommandType, node: Node, timeout_sec: float) -> bool
+  }
+  
+  class "JointTrajectoryActionExecutor" as JointTrajectoryActionExecutor {
+    topic_name : str
+    execute_async(command: JointTrajectory, node: Node) -> Future
+  }
+  
+  class "GripperActionExecutor" as GripperActionExecutor {
+    topic_name : str
+    execute_async(command: GripperCommandMessage, node: Node) -> Future
+  }
+}
+
+package "Domain Model" {
+  abstract class "RobotAction" as RobotAction {
+    robot_prefix : str
+    timestep_id : int
+    arm_action : ArmAction
+    gripper_action : GripperAction
+  }
+  
+  abstract class "ArmAction" as ArmAction {
+    time_between_goals : float
+  }
+  
+  class "AbsoluteJointStateAction" as AbsoluteJointStateAction {
+    joint_states : np.ndarray
+    joint_names : list[str] = []
+    time_between_goals : float
+  }
+  
+  class "DeltaEndeffectorAction" as DeltaEndeffectorAction {
+    position : np.ndarray
+    orientation : np.ndarray
+    time_between_goals : float = 0.5
+  }
+  
+  abstract class "GripperAction" as GripperAction {
+  }
+  
+  class "SynchronousGripperAction" as SynchronousGripperAction {
+    gripper_aperture : float
+  }
+}
+
+package "Config" {
+  abstract class "ModelConfig" as ModelConfig {
+    image_features : list[ImageFeature]
+    robot_configs : list[RobotConfig]
+  }
+  
+  class "RobotConfig" as RobotConfig {
+    prefix : str
+    frame_id : str
+    group_name : str
+    arm_keys : RobotOutputKeys
+    gripper_keys : RobotOutputKeys
+    joint_state_topic : str
+    time_between_goals : float
+  }
+}
+
+' Relationships
+RfmActionServer o-- ModelPort : _model_port
+RfmActionServer o-- ActionPort : _action_port
+
+ModelPort o-- ModelClient : model_client
+ModelPort *-- ModelOutputMapper : model_output_mapper
+ModelPort *-- ObservationHandler : observation_handler
+
+ModelClient <|-- Gr00tModelClient : implements
+ModelClient <|-- OctoModelClient : implements
+
+ObservationHandler <|-- ImageHandler
+ObservationHandler <|-- JointStateHandler
+
+JointStateHandler --> RobotConfig : robots
+
+ActionPort o-- Robot : robots
+ActionPort o-- JointStateHandler : joint_state_handler
+
+Robot o-- ActionMapper : action_mapper
+Robot o-- MotionExecutor : arm_action_executor
+Robot o-- GripperActionExecutor : gripper_action_executor
+Robot --> RobotConfig : robot_config
+
+RobotAction o-- ArmAction : arm_action
+RobotAction o-- GripperAction : gripper_action
+
+ArmAction <|-- AbsoluteJointStateAction
+ArmAction <|-- DeltaEndeffectorAction
+
+GripperAction <|-- SynchronousGripperAction
+
+MotionExecutor <|-- JointTrajectoryActionExecutor
+MotionExecutor <|-- GripperActionExecutor
+
+ModelConfig *-- RobotConfig : robot_configs
+
+' Example implementations (shown with dashed lines)
+ModelPort <|.. "Gr00tAdapter\nOctoAdapter" : implements
+Gr00tModelClient <|.. "Gr00tClient\nConstantGr00tClient" : implements
+OctoModelClient <|.. "OctoClient\nConstantOctoClient" : implements
+ModelOutputMapper <|.. "Gr00tJointStateMapper\nGr00tJointStateMapperRTC\nOctoDeltaEndeffectorMapper" : implements
+ActionPort <|.. "FollowJointTrajectoryAdapter" : implements
+ActionMapper <|.. "AbsoluteJointActionMapper" : implements
+ActionMapper <|.. "DeltaEndeffectorActionMapper" : implements
+
+note right of AbsoluteJointActionMapper
+  Stateless mapper: ActionMapper<JointTrajectory>
+  Maps absolute joint positions directly
+  without needing current state.
+end note
+
+note right of DeltaEndeffectorActionMapper
+  Stateful mapper: ActionMapper<JointTrajectory>
+  Maps delta endeffector poses using FK/IK.
+  Requires current joint state.
+end note
+
+@enduml
