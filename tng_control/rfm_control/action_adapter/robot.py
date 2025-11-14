@@ -1,6 +1,3 @@
-from trajectory_msgs.msg._joint_trajectory import JointTrajectory
-
-
 from collections.abc import Sequence
 from typing import Generic
 from attr import dataclass
