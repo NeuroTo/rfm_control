@@ -8,7 +8,7 @@ from rclpy.node import Node
 
 from tng_control.rfm_control.model_adapter.model_port import ModelPort
 from tng_control.rfm_control.action_adapter.action_port import ActionPort
-from tng_control.rfm_control.model_adapter.adapter_provider import get_adapters, ConfigStrings
+from tng_control.rfm_control.adapter_provider import get_adapters, ConfigStrings
 from tng_control.rfm_control.status_code import RfmControlStatusCode
 from tng_control.rfm_control.exceptions import (
     ImageNotAvailableException, JointStatesNotAvailableException
