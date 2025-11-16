@@ -20,8 +20,8 @@ class Gr00tJointStateMapper(ModelOutputMapper[Gr00tAction]):
         actions: list[RobotAction] = []
         for robot_config in self.robots:
             for i, (joint_positions, gripper_aperture) in enumerate(zip(
-                model_output[robot_config.arm_keys.output_position_key],
-                model_output[robot_config.gripper_keys.output_position_key])):
+                model_output[robot_config.arm_config.model_output_position_key],
+                model_output[robot_config.gripper_config.model_output_position_key])):
                 actions.append(self._to_robot_action(robot_config, i, joint_positions, gripper_aperture))
         return actions
 
@@ -53,8 +53,8 @@ class Gr00tJointStateMapperRTC(ModelOutputMapper[Gr00tAction]):
         return actions
 
     def _to_robot_action(self, robot_config: RobotConfig, model_action: Gr00tAction) -> RobotAction:
-        joint_states = np.array(model_action[robot_config.arm_keys.output_position_key]) * np.pi / 100
-        gripper_aperture = float(model_action[robot_config.gripper_keys.output_position_key]) * np.pi / 100
+        joint_states = np.array(model_action[robot_config.arm_config.model_output_position_key]) * np.pi / 100
+        gripper_aperture = float(model_action[robot_config.gripper_config.model_output_position_key]) * np.pi / 100
 
         return RobotAction(
             robot_prefix=robot_config.prefix,

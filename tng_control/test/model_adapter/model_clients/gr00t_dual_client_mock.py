@@ -1,14 +1,14 @@
 import numpy as np
 import time
 
-from tng_control.rfm_control.config.model_configs.gr00t_config import Gr00tConfig
+from tng_control.rfm_control.config.model_client_config_base import Gr00tConfigBase
 from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient, Gr00tAction
 
 
-class ConstantDualGr00tClient(Gr00tModelClient):
-    """Policy client implementation for GR00T robot models using configuration objects."""
+class Gr00tDualClientMock(Gr00tModelClient):
+    """Mock policy client implementation for dual-arm GR00T robot models."""
 
-    def __init__(self, config: Gr00tConfig):
+    def __init__(self, config: Gr00tConfigBase):
         """
         Initialize with configuration dictionary.
 
@@ -54,3 +54,4 @@ class ConstantDualGr00tClient(Gr00tModelClient):
             "action.single_arm_velocity":
             [100, 100, 100, 100, 100],
             "action.gripper_velocity": 50}
+

@@ -1,0 +1,37 @@
+# Octo UR5 Mock Test Client Configuration
+# For testing without actual model server
+model:
+  type: octo
+  mapper_type: default
+  client_type: mock  # Uses mock test client
+  port: 8000
+
+robots:
+  - prefix: ""
+    group_name: "arm"
+    frame_id: "world"
+    joint_state_topic: "/joint_states"
+    time_between_goals: 0.5
+    arm:
+      topic_name: "/arm_controller/follow_joint_trajectory"
+      model_input_position_key: "state.joint_positions"
+      model_input_velocity_key: ""
+      model_input_load_key: ""
+      model_output_position_key: "action.joint_positions"
+      model_output_velocity_key: ""
+    gripper:
+      topic_name: "/gripper_controller/gripper_cmd"
+      model_input_position_key: "state.finger_positions"
+      model_input_velocity_key: ""
+      model_input_load_key: ""
+      model_output_position_key: "action.finger_positions"
+      model_output_velocity_key: ""
+
+images:
+  - model_input_key: "image_primary"
+    topic_name: "/camera_global2/rgb/image_raw"
+    resolution: [256, 256]
+    image_type: raw
+    transformation: octo
+
+

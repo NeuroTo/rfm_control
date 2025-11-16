@@ -9,7 +9,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image, CompressedImage
 
 from tng_control.rfm_control.observation_handler.observation_handler import ObservationHandler
-from tng_control.rfm_control.observation_handler.image_feature import ImageFeature
+from tng_control.rfm_control.config.model_configs.image_config import ImageConfig
 from tng_control.rfm_control.observation_handler.observation_dto import Observations
 from tng_control.rfm_control.exceptions import ImageNotAvailableException
 
@@ -18,8 +18,8 @@ class ImageHandler(ObservationHandler):
 
     subscription_images: Sequence[Subscription] | None = None
 
-    def __init__(self, image_features: Sequence[ImageFeature]) -> None:
-        self.image_features = image_features
+    def __init__(self, image_configs: Sequence[ImageConfig]) -> None:
+        self.image_configs = image_configs
         self.current_images: dict[str, Image | CompressedImage] = {}
         self.cv2_bridge: CvBridge = CvBridge()
 
@@ -33,14 +33,14 @@ class ImageHandler(ObservationHandler):
         
         # Create subscriptions with proper callback binding
         subscriptions = []
-        for image_feature in self.image_features:
+        for image_config in self.image_configs:
             def make_callback(topic_name):
                 return lambda msg: self._update_callback(msg, key=topic_name)
             
             subscription = node.create_subscription(
-                image_feature.image_type,
-                image_feature.topic_name,
-                make_callback(image_feature.topic_name),
+                image_config.image_type,
+                image_config.topic_name,
+                make_callback(image_config.topic_name),
                 qos_profile=qos_profile)
             subscriptions.append(subscription)
         
@@ -55,12 +55,12 @@ class ImageHandler(ObservationHandler):
         Robots field uses default (empty list).
         """
         images = {}
-        for image_ft in self.image_features:
-            if image_ft.topic_name not in self.current_images:
-                raise ImageNotAvailableException(image_ft.topic_name)
+        for image_config in self.image_configs:
+            if image_config.topic_name not in self.current_images:
+                raise ImageNotAvailableException(image_config.topic_name)
             # Store raw decoded image without resizing or model-specific transformation
-            images[image_ft.topic_name] = self._decode_ros_image(
-                self.current_images[image_ft.topic_name]
+            images[image_config.topic_name] = self._decode_ros_image(
+                self.current_images[image_config.topic_name]
             )
         return Observations(images=images)
 
