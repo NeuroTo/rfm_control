@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 from tng_control.rfm_control.observation_handler.image_feature import ImageFeature
 from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
-from tng_robot_arms_shared import Ros2ControlJointConfig
+from tng_robot_arms_shared.ros2_control_joint_config import Ros2ControlJointConfig
 
 
 @dataclass

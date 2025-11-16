@@ -23,8 +23,8 @@ from tng_control.test.model_adapter.model_clients.constant_gr00t_client_dual imp
 from tng_control.test.config.model_configs.gr00t_config import ConstGr00t, ConstGr00tSo101DualArmConfig
 from tng_control.test.model_adapter.model_clients.constant_octo_client import ConstantOctoClient
 
-from tng_robot_arms_shared import get_robot_description_from_topic, parse_robot_description_to_joint_configs
-
+from tng_robot_arms_shared.robot_description_listener import get_robot_description_from_topic
+from tng_robot_arms_shared.ros2_control_joint_config import parse_robot_description_to_joint_configs
 
 ConfigStrings = Literal['gr00t_so101', 'gr00t_so101_rtc', 'gr00t_ur5',
                         "const", "dual_const", "so101_dual", 'octo_ur5', "octo_ur5_constant"]
