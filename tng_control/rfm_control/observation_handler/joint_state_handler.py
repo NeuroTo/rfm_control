@@ -66,6 +66,7 @@ class JointStateHandler(ObservationHandler):
     def _get_joint_data(self, joint_name: str) -> tuple[float, float, float]:
         idx = self._joint_name_to_index(joint_name)
         joint_state = self.get_current_joint_state()
+        # transform from real joint angles to policy model scale
         return (
             joint_state.position[idx] * 100 / np.pi,
             joint_state.velocity[idx] * 100 / np.pi,

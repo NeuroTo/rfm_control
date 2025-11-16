@@ -62,15 +62,14 @@ package "Action Adapter" {
   }
   
   class "Robot<CommandType>" as Robot {
+    prefix : str
     action_mapper : ActionMapper<CommandType>
     arm_action_executor : MotionExecutor<CommandType>
     gripper_action_executor : GripperActionExecutor
-    robot_config : RobotConfig
     _current_actions : dict[int, RobotAction]
+    __init__(prefix: str, action_mapper: ActionMapper<CommandType>, arm_action_executor: MotionExecutor<CommandType>, gripper_action_executor: GripperActionExecutor) -> None
     set_actions(actions: Sequence[RobotAction]) -> None
     get_action(timestep: int) -> RobotAction | None
-    {static}from_robot_config(robot_config: RobotConfig) -> Robot<JointTrajectory>
-    {static}from_robot_config_delta_action(robot_config: RobotConfig) -> Robot<JointTrajectory>
   }
   
   abstract class "ActionMapper<CommandType>" as ActionMapper {

@@ -11,7 +11,6 @@ class Gr00tConfig(ModelConfig):
     def port(self) -> int:
         return 8043
 
-
 class Gr00tUR5Config(Gr00tConfig):
     _robot_configs = [RobotConfig(prefix="",
                                   group_name="arm",

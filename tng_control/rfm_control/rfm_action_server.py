@@ -8,7 +8,7 @@ from rclpy.node import Node
 
 from tng_control.rfm_control.model_adapter.model_port import ModelPort
 from tng_control.rfm_control.action_adapter.action_port import ActionPort
-from tng_control.rfm_control.adapter_provider import get_adapters, ConfigStrings
+from tng_control.rfm_control.adapter_provider import AdapterProvider, ConfigStrings
 from tng_control.rfm_control.status_code import RfmControlStatusCode
 from tng_control.rfm_control.exceptions import (
     ImageNotAvailableException, JointStatesNotAvailableException
@@ -78,9 +78,10 @@ def main(args: list[str] | None = None) -> None:
     rclpy.init(args=args)
     conf_str: ConfigStrings = cast(ConfigStrings, sys.argv[1])
 
+    provider = AdapterProvider()
     model_port: ModelPort
     action_port: ActionPort
-    model_port, action_port = get_adapters(conf_str)
+    model_port, action_port = provider.get_adapters(conf_str)
     rfm_action_server = RfmActionServer(model_port, action_port)
 
     try:
