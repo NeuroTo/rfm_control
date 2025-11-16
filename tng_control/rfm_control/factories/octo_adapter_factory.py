@@ -3,7 +3,8 @@ from tng_control.rfm_control.observation_handler.image_handler import ImageHandl
 from tng_control.rfm_control.action_adapter.robot import Robot
 from tng_control.rfm_control.model_adapter.model_clients.octo.octo_client import OctoClient
 from tng_control.rfm_control.config.model_configs.octo_config import OctoConfig
-from tng_control.rfm_control.model_adapter.mapper.delta_endeffector_mapper import OctoDeltaEndeffectorMapper
+from tng_control.rfm_control.model_adapter.mapper.input.octo_input_mapper import OctoInputMapper
+from tng_control.rfm_control.model_adapter.mapper.output.delta_endeffector_mapper import OctoDeltaEndeffectorMapper
 from tng_control.rfm_control.action_adapter.action_port import ActionPort
 from tng_control.rfm_control.action_adapter.follow_joint_trajectory_adapter import FollowJointTrajectoryAdapter
 from tng_control.rfm_control.action_adapter.mapper.delta_endeffector_action_mapper import DeltaEndeffectorActionMapper
@@ -30,8 +31,9 @@ class OctoAdapterFactory:
         """Create model and action adapters with given client."""
         image_handler = ImageHandler(self.config.image_features)
         joint_state_handler = JointStateHandler(self.config.robot_configs)
+        model_input_mapper = OctoInputMapper(self.config.robot_configs, self.config.image_features)
         model_output_mapper = OctoDeltaEndeffectorMapper(self.config.robot_configs)
-        model_adapter = OctoAdapter(model_client, model_output_mapper, [image_handler])
+        model_adapter = OctoAdapter(model_client, model_input_mapper, model_output_mapper, [image_handler])
         robots = [
             Robot(
                 prefix=robot_config.prefix,

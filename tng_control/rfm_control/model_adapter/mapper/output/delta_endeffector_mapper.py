@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from typing_extensions import override
 import numpy as np
 
-from tng_control.rfm_control.model_adapter.mapper.model_output_mapper import ModelOutputMapper
+from tng_control.rfm_control.model_adapter.mapper.output.model_output_mapper import ModelOutputMapper
 from tng_control.rfm_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
 from tng_control.rfm_control.domain_model.robot_action import RobotAction
 from tng_control.rfm_control.domain_model.synchronous_gripper_action import SynchronousGripperAction
@@ -52,3 +52,4 @@ class OctoDeltaEndeffectorMapper(ModelOutputMapper[OctoAction]):
 
     def _parse_gripper(self, gripper_value: float) -> float:
         return 0.001 if gripper_value > 0.5 else 0.038
+

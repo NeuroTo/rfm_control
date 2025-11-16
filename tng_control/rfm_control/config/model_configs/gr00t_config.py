@@ -148,16 +148,28 @@ class Gr00tSo101DualArmConfig(Gr00tSO101Config):
     def image_features(self) -> list[ImageFeature]:
         return [
             ImageFeature(
-                "video.right_arm_wrist", (640, 480), "/right_arm_wrist/image_raw/compressed", lambda x: np.array([x]),
+                model_input_image_key="video.right_arm_wrist",
+                resolution=(640, 480),
+                topic_name="/right_arm_wrist/image_raw/compressed",
+                transformation=lambda x: np.array([x]),
             ),
             ImageFeature(
-                "video.left_arm_wrist", (640, 480), "/left_arm_wrist/image_raw/compressed", lambda x: np.array([x]),
+                model_input_image_key="video.left_arm_wrist",
+                resolution=(640, 480),
+                topic_name="/left_arm_wrist/image_raw/compressed",
+                transformation=lambda x: np.array([x]),
             ),
             ImageFeature(
-                "video.global1", (640, 480), "/global1/image_raw/compressed", lambda x: np.array([x]),
+                model_input_image_key="video.global1",
+                resolution=(640, 480),
+                topic_name="/global1/image_raw/compressed",
+                transformation=lambda x: np.array([x]),
             ),
             ImageFeature(
-                "video.global2", (640, 480), "/global2/image_raw/compressed", lambda x: np.array([x]),
+                model_input_image_key="video.global2",
+                resolution=(640, 480),
+                topic_name="/global2/image_raw/compressed",
+                transformation=lambda x: np.array([x]),
             ),
         ]
 

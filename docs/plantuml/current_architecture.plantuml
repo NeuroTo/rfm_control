@@ -11,10 +11,11 @@ package "Model Adapter" {
   abstract class "ModelPort" as ModelPort {
     _observation_handler : Sequence[ObservationHandler]
     {abstract}model_client : ModelClient[ModelActionType]
+    {abstract}model_input_mapper : ModelInputMapper
     {abstract}model_output_mapper : ModelOutputMapper[ModelOutputType]
     observation_handler : Sequence[ObservationHandler]
     {abstract}get_action(prompt: str) -> Sequence[RobotAction]
-    get_concat_observation() -> dict[str, np.ndarray]
+    get_concat_observation() -> Observations
   }
   
   abstract class "ModelClient<ModelActionType>" as ModelClient {
@@ -31,27 +32,92 @@ package "Model Adapter" {
     OctoAction = list[list[list[float]]]
   }
   
-  abstract class "ModelOutputMapper<ModelOutputType>" as ModelOutputMapper {
-    {abstract}to_action(model_output: ModelOutputType) -> Sequence[RobotAction]
+  package "mapper.input" {
+    abstract class "ModelInputMapper" as ModelInputMapper {
+      {abstract}transform_observation(observations: Observations) -> dict[str, np.ndarray]
+    }
+    
+    class "Gr00tInputMapper" as Gr00tInputMapper {
+      robot_configs : Sequence[RobotConfig]
+      image_features : Sequence[ImageFeature]
+      transform_observation(observations: Observations) -> dict[str, np.ndarray]
+    }
+    
+    class "OctoInputMapper" as OctoInputMapper {
+      robot_configs : Sequence[RobotConfig]
+      image_features : Sequence[ImageFeature]
+      transform_observation(observations: Observations) -> dict[str, np.ndarray]
+    }
+    
+    note top of ModelInputMapper
+      Transforms type-safe Observations DTOs to model-specific format.
+      Provides symmetry with ModelOutputMapper.
+      
+      Data flow: 
+      ObservationHandlers → Observations DTO → ModelInputMapper 
+      → Model-specific dict → ModelClient
+      
+      Handles:
+      - Joint data scaling (GR00T: radians * 100/π, Octo: raw radians)
+      - Image resizing and transformation
+      - Model-specific metadata (e.g., timestep_pad_mask for Octo)
+    end note
+  }
+  
+  package "mapper.output" {
+    abstract class "ModelOutputMapper<ModelOutputType>" as ModelOutputMapper {
+      {abstract}to_action(model_output: ModelOutputType) -> Sequence[RobotAction]
+    }
+    
+    class "Gr00tJointStateMapper" as Gr00tJointStateMapper {
+      to_action(model_output) -> Sequence[RobotAction]
+    }
+    
+    class "Gr00tJointStateMapperRTC" as Gr00tJointStateMapperRTC {
+      to_action(model_output) -> Sequence[RobotAction]
+    }
+    
+    class "OctoDeltaEndeffectorMapper" as OctoDeltaEndeffectorMapper {
+      to_action(model_output) -> Sequence[RobotAction]
+    }
+    
+    note top of ModelOutputMapper
+      Transforms model-specific output to RobotActions.
+      Provides symmetry with ModelInputMapper.
+      
+      Data flow:
+      ModelClient → Model Output → ModelOutputMapper 
+      → RobotActions → ActionPort
+    end note
   }
 }
 
 package "Observation Handler" {
   abstract class "ObservationHandler" as ObservationHandler {
-    {abstract}get_observation_dict() -> dict[str, np.ndarray]
+    {abstract}get_observations() -> Observations
     {abstract}create_subscription(node: Node) -> None
   }
   
   class "ImageHandler" as ImageHandler {
-    get_observation_dict() -> dict[str, np.ndarray]
+    image_features : Sequence[ImageFeature]
+    get_observations() -> Observations
     create_subscription(node: Node) -> None
   }
   
   class "JointStateHandler" as JointStateHandler {
-    get_observation_dict() -> dict[str, np.ndarray]
-    get_current_joint_state() -> JointState
+    robots : Sequence[RobotConfig]
+    get_observations() -> Observations
+    get_current_joint_state() -> RosJointState
     create_subscription(node: Node) -> None
   }
+  
+  note right of ObservationHandler
+    Returns type-safe Observations DTOs.
+    Handlers provide partial observations:
+    - JointStateHandler: populates robots
+    - ImageHandler: populates images
+    ModelPort merges into complete Observations.
+  end note
 }
 
 package "Action Adapter" {
@@ -159,11 +225,24 @@ RfmActionServer o-- ModelPort : _model_port
 RfmActionServer o-- ActionPort : _action_port
 
 ModelPort o-- ModelClient : model_client
+ModelPort *-- ModelInputMapper : model_input_mapper
 ModelPort *-- ModelOutputMapper : model_output_mapper
 ModelPort *-- ObservationHandler : observation_handler
+ModelPort ..> Observations : merges from handlers
+
+ModelInputMapper ..> Observations : consumes
+ModelInputMapper --> RobotConfig : uses
+ModelInputMapper --> ImageFeature : uses
 
 ModelClient <|-- Gr00tModelClient : implements
 ModelClient <|-- OctoModelClient : implements
+
+ModelInputMapper <|-- Gr00tInputMapper : implements
+ModelInputMapper <|-- OctoInputMapper : implements
+
+ModelOutputMapper <|-- Gr00tJointStateMapper : implements
+ModelOutputMapper <|-- Gr00tJointStateMapperRTC : implements
+ModelOutputMapper <|-- OctoDeltaEndeffectorMapper : implements
 
 ObservationHandler <|-- ImageHandler
 ObservationHandler <|-- JointStateHandler
@@ -195,10 +274,35 @@ ModelConfig *-- RobotConfig : robot_configs
 ModelPort <|.. "Gr00tAdapter\nOctoAdapter" : implements
 Gr00tModelClient <|.. "Gr00tClient\nConstantGr00tClient" : implements
 OctoModelClient <|.. "OctoClient\nConstantOctoClient" : implements
-ModelOutputMapper <|.. "Gr00tJointStateMapper\nGr00tJointStateMapperRTC\nOctoDeltaEndeffectorMapper" : implements
 ActionPort <|.. "FollowJointTrajectoryAdapter" : implements
 ActionMapper <|.. "AbsoluteJointActionMapper" : implements
 ActionMapper <|.. "DeltaEndeffectorActionMapper" : implements
+
+note right of Gr00tInputMapper
+  Transforms Observations DTO to GR00T format:
+  - Joint scaling: radians * 100 / π
+  - Image resizing per ImageFeature config
+  - Maps to model-specific keys
+  Symmetrical to Gr00tJointStateMapper output.
+end note
+
+note right of OctoInputMapper
+  Transforms Observations DTO to Octo format:
+  - Passes joint values unchanged (radians)
+  - Image resizing per ImageFeature config
+  - Adds timestep_pad_mask metadata
+end note
+
+note right of Gr00tJointStateMapper
+  Transforms GR00T policy scale to radians:
+  value * π / 100
+  Inverse of Gr00tInputMapper.
+end note
+
+note right of OctoDeltaEndeffectorMapper
+  Maps Octo delta endeffector outputs
+  to robot actions. No scaling needed.
+end note
 
 note right of AbsoluteJointActionMapper
   Stateless mapper: ActionMapper<JointTrajectory>
@@ -210,6 +314,24 @@ note right of DeltaEndeffectorActionMapper
   Stateful mapper: ActionMapper<JointTrajectory>
   Maps delta endeffector poses using FK/IK.
   Requires current joint state.
+end note
+
+note bottom of JointStateHandler
+  Returns Observations DTO with:
+  - robots: list[RobotState] (populated)
+  - images: {} (empty, default)
+  
+  Joint values in radians (model-agnostic).
+  Uses RosJointState (sensor_msgs.msg) internally.
+end note
+
+note bottom of ImageHandler
+  Returns Observations DTO with:
+  - robots: [] (empty, default)
+  - images: dict[str, np.ndarray] (populated)
+  
+  Raw decoded images without resizing.
+  Resizing is model-specific (done in ModelInputMapper).
 end note
 
 @enduml
