@@ -6,12 +6,26 @@ from tng_robot_arms_shared.robot_model_config import RobotModelConfig
 @dataclass
 class Ros2ControlJointConfig:
     prefix: str
-    arm_joints: list[str]
+    arm_joint_names: list[str]
     """names of the arm joints. Each joint name should start with the given prefix."""
-    gripper_joint: str
+    gripper_joint_name: str
     """names of the gripper joint. Should start with the given prefix."""
 
 def parse_robot_description_to_joint_configs(robot_description: str, prefixes: list[str] | None = None) -> list[Ros2ControlJointConfig]:
+    """Parse the robot description to get the joint names controlled by ROS2 control.
+    
+    Args:
+        robot_description: The robot description in URDF format as a string.
+        prefixes: The prefixes of the joints to parse. If None, the prefixes from the robot model config will be used.
+
+    Raises:
+        ValueError: If no <ros2_control> elements are found in the URDF.
+        ValueError: If no joints are found for the given prefixes.
+        ValueError: If no unique gripper joint is found for the given prefixes.
+
+    Returns:
+        A list of Ros2ControlJointConfig objects.
+    """
     root = ET.fromstring(robot_description)
 
     # Find the <ros2_control> block (may be multiple)
