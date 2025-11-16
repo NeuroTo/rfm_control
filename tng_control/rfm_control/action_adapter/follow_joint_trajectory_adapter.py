@@ -48,8 +48,10 @@ class FollowJointTrajectoryAdapter(ActionPort):
     @override
     def move(self, node: Node, actions: Sequence[RobotAction], action_execution_horizon: int) -> RfmControlStatusCode:
 
+        # Route actions to the correct robots based on robot_prefix
         for robot in self.robots:
-            robot.set_actions(actions)
+            robot_actions = [action for action in actions if action.robot_prefix == robot.prefix]
+            robot.set_actions(robot_actions)
 
         for t in range(action_execution_horizon):
             futures = []
@@ -65,7 +67,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
                     )
                 except (ValueError, RuntimeError) as e:
                     # Action mapping failed (e.g., IK failed, invalid action type)
-                    node.get_logger().error(f"Action mapping failed for robot {robot.robot_config.prefix}: {e}")
+                    node.get_logger().error(f"Action mapping failed for robot {robot.prefix}: {e}")
                     return RfmControlStatusCode.ACTION_MAPPING_FAILED
 
                 robot_action_future = robot.arm_action_executor.execute_async(trajectory, node)

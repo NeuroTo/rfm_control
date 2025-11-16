@@ -26,6 +26,7 @@ class Gr00tJointStateMapper(ModelOutputMapper[Gr00tAction]):
         return actions
 
     def _to_robot_action(self, robot_config: RobotConfig, timestep: int, joint_positions: np.ndarray, gripper_aperture: float) -> RobotAction:
+        # transform from policy model scale to real joint angles
         joint_states = np.array(joint_positions) * np.pi / 100
         gripper_aperture = float(gripper_aperture) * np.pi / 100
 
