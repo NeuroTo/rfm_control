@@ -1,14 +1,16 @@
 from collections.abc import Sequence
+from typing_extensions import override
 import numpy as np
 from cv_bridge import CvBridge
-import cv2
-from sensor_msgs.msg import Image, CompressedImage
-import rclpy
+
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from rclpy.subscription import Subscription
 from rclpy.node import Node
-from typing_extensions import override
+from sensor_msgs.msg import Image, CompressedImage
+
 from tng_control.rfm_control.observation_handler.observation_handler import ObservationHandler
 from tng_control.rfm_control.observation_handler.image_feature import ImageFeature
+from tng_control.rfm_control.observation_handler.observation_dto import Observations
 from tng_control.rfm_control.exceptions import ImageNotAvailableException
 
 
@@ -25,32 +27,42 @@ class ImageHandler(ObservationHandler):
     def create_subscription(self, node: Node) -> None:
         if self.subscription_images is not None:
             return
-        qos_profile = rclpy.qos.QoSProfile(
-            reliability=rclpy.qos.ReliabilityPolicy.BEST_EFFORT,
-            history=rclpy.qos.HistoryPolicy.KEEP_LAST, depth=1)
-        self.subscription_images = [
-            node.create_subscription(
+        qos_profile = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            history=HistoryPolicy.KEEP_LAST, depth=1)
+        
+        # Create subscriptions with proper callback binding
+        subscriptions = []
+        for image_feature in self.image_features:
+            def make_callback(topic_name):
+                return lambda msg: self._update_callback(msg, key=topic_name)
+            
+            subscription = node.create_subscription(
                 image_feature.image_type,
-                image_feature.topic_name, 
-                lambda x: self._update_callback(x, key=image_feature.topic_name),
+                image_feature.topic_name,
+                make_callback(image_feature.topic_name),
                 qos_profile=qos_profile)
-            for image_feature in self.image_features
-        ]
+            subscriptions.append(subscription)
+        
+        self.subscription_images = subscriptions
 
     @override
-    def get_observation_dict(self) -> dict[str, np.ndarray]:
-        observation = {}
+    def get_observations(self) -> Observations:
+        """
+        Get image observations.
+        
+        Returns a partial Observations object with images populated.
+        Robots field uses default (empty list).
+        """
+        images = {}
         for image_ft in self.image_features:
             if image_ft.topic_name not in self.current_images:
                 raise ImageNotAvailableException(image_ft.topic_name)
-            observation[image_ft.model_input_image_key] = self._process_image(image_ft)
-        return observation
-
-    def _process_image(self, image_ft: ImageFeature) -> np.ndarray:
-        image = self.current_images[image_ft.topic_name]
-        encoded_image = self._decode_ros_image(image)
-        resized_image = cv2.resize(encoded_image, image_ft.resolution)
-        return image_ft.transformation(resized_image)
+            # Store raw decoded image without resizing or model-specific transformation
+            images[image_ft.topic_name] = self._decode_ros_image(
+                self.current_images[image_ft.topic_name]
+            )
+        return Observations(images=images)
 
     def _decode_ros_image(self, image: Image | CompressedImage) -> np.ndarray:
         if isinstance(image, Image):

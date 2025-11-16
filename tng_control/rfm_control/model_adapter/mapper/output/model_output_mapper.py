@@ -17,3 +17,4 @@ class ModelOutputMapper(ABC, Generic[ModelOutputType]):
     @abstractmethod
     def to_action(self, model_output: ModelOutputType) -> Sequence[RobotAction]:
         pass
+

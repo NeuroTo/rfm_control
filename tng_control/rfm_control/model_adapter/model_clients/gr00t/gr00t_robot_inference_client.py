@@ -1,5 +1,4 @@
 # Code from https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/examples/eval_lerobot.py
-# because the gr00t-repo was removed from main
 
 
 from abc import ABC, abstractmethod
@@ -127,7 +126,7 @@ class BaseInferenceClient:
 
 class RobotInferenceClient(BaseInferenceClient, BasePolicy):
     """
-    Client for communicating with the RealRobotServer
+    Client for communicating with the RealPolicyServer
     """
 
     def __init__(self, host: str = "localhost", port: int = 5555, api_token: str = None):
