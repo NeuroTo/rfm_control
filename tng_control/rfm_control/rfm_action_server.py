@@ -1,5 +1,4 @@
 import sys
-from typing import cast
 from collections.abc import Sequence
 
 import rclpy
@@ -8,7 +7,7 @@ from rclpy.node import Node
 
 from tng_control.rfm_control.model_adapter.model_port import ModelPort
 from tng_control.rfm_control.action_adapter.action_port import ActionPort
-from tng_control.rfm_control.adapter_provider import AdapterProvider, ConfigStrings
+from tng_control.rfm_control.adapter_provider import AdapterProvider
 from tng_control.rfm_control.status_code import RfmControlStatusCode
 from tng_control.rfm_control.exceptions import (
     ImageNotAvailableException, JointStatesNotAvailableException
@@ -75,13 +74,30 @@ class RfmActionServer(Node):
 
 
 def main(args: list[str] | None = None) -> None:
+    """
+    Start RFM Action Server with YAML configuration.
+    
+    Usage:
+        ros2 run tng_control rfm_action_server config/configs/gr00t_so101.yaml
+    
+    Args:
+        args: Command line arguments (expects YAML config path as first arg)
+    """
     rclpy.init(args=args)
-    conf_str: ConfigStrings = cast(ConfigStrings, sys.argv[1])
+    
+    if len(sys.argv) < 2:
+        raise ValueError(
+            "Missing configuration file argument.\n"
+            "Usage: ros2 run tng_control rfm_action_server <config_file.yaml>\n"
+            "Example: ros2 run tng_control rfm_action_server config/configs/gr00t_so101.yaml"
+        )
+    
+    config_path: str = sys.argv[1]
 
     provider = AdapterProvider()
     model_port: ModelPort
     action_port: ActionPort
-    model_port, action_port = provider.get_adapters(conf_str)
+    model_port, action_port = provider.get_adapters(config_path)
     rfm_action_server = RfmActionServer(model_port, action_port)
 
     try:

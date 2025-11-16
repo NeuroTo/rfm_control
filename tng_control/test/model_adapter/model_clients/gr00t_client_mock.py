@@ -2,13 +2,13 @@ import time
 import numpy as np
 
 from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_robot_inference_client import RobotInferenceClient
-from tng_control.rfm_control.config.model_configs.gr00t_config import Gr00tConfig
+from tng_control.rfm_control.config.model_client_config_base import Gr00tConfigBase
 from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient, Gr00tAction
 
 
-class ConstantGr00tClient(Gr00tModelClient):
+class Gr00tClientMock(Gr00tModelClient):
 
-    def __init__(self, config: Gr00tConfig):
+    def __init__(self, config: Gr00tConfigBase):
         self.start_time = time.time()
         self.started = False
         self.positions = np.array([
@@ -42,10 +42,10 @@ class ConstantGr00tClient(Gr00tModelClient):
             "action.gripper_velocity": np.array([50])}
 
 
-class ConstantGr00tRTCClient(Gr00tModelClient):
-    """Policy client implementation for GR00T robot models using configuration objects."""
+class Gr00tRTCClientMock(Gr00tModelClient):
+    """Mock policy client implementation for GR00T RTC robot models."""
 
-    def __init__(self, config: Gr00tConfig):
+    def __init__(self, config: Gr00tConfigBase):
         self.start_time = time.time()
         self.started = False
 
@@ -78,3 +78,4 @@ class ConstantGr00tRTCClient(Gr00tModelClient):
             "action.gripper": np.array([12.2]),
             "action.single_arm_velocity": np.array([100, 100, 100, 100, 100]),
             "action.gripper_velocity": np.array([50])}
+

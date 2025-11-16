@@ -8,7 +8,7 @@ from rclpy.subscription import Subscription
 from typing_extensions import override
 
 from tng_control.rfm_control.exceptions import JointStatesNotAvailableException
-from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig, RobotOutputKeys
+from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig, ActuatorConfig
 from tng_control.rfm_control.observation_handler.observation_handler import ObservationHandler
 from tng_control.rfm_control.observation_handler.observation_dto import JointState, RobotState, Observations
 
@@ -59,8 +59,8 @@ class JointStateHandler(ObservationHandler):
         robots_data = []
         
         for robot in self.robots:
-            arm_data = self._get_joint_state(robot.arm_keys)
-            gripper_data = self._get_joint_state(robot.gripper_keys)
+            arm_data = self._get_joint_state(robot.arm_config)
+            gripper_data = self._get_joint_state(robot.gripper_config)
             
             robots_data.append(RobotState(
                 prefix=robot.prefix,
@@ -95,7 +95,7 @@ class JointStateHandler(ObservationHandler):
     def _update_callback(self, joint_state: RosJointState) -> None:
         self._current_joint_state = joint_state
 
-    def _get_joint_state(self, robot_keys: RobotOutputKeys) -> JointState:
+    def _get_joint_state(self, robot_keys: ActuatorConfig) -> JointState:
         """
         Get joint state for a set of joints.
         

@@ -4,7 +4,7 @@ import cv2
 
 from tng_control.rfm_control.model_adapter.mapper.input.model_input_mapper import ModelInputMapper
 from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
-from tng_control.rfm_control.observation_handler.image_feature import ImageFeature
+from tng_control.rfm_control.config.model_configs.image_config import ImageConfig
 from tng_control.rfm_control.observation_handler.observation_dto import Observations, JointState
 
 
@@ -19,16 +19,16 @@ class OctoInputMapper(ModelInputMapper):
     - Adds Octo-specific metadata (timestep_pad_mask)
     """
     
-    def __init__(self, robot_configs: Sequence[RobotConfig], image_features: Sequence[ImageFeature]):
+    def __init__(self, robot_configs: Sequence[RobotConfig], image_configs: Sequence[ImageConfig]):
         """
         Initialize OctoInputMapper.
         
         Args:
             robot_configs: Configuration for each robot (defines model-specific keys)
-            image_features: Image features defining topic→key mapping
+            image_configs: Image configurations defining topic→key mapping
         """
         self.robot_configs = robot_configs
-        self.image_features = image_features
+        self.image_configs = image_configs
     
     def transform_observation(self, observations: Observations) -> dict[str, np.ndarray]:
         """
@@ -47,22 +47,22 @@ class OctoInputMapper(ModelInputMapper):
                 # Transform arm data
                 transformed.update(self._transform_joint_data(
                     robot_obs.arm,
-                    robot_config.arm_keys
+                    robot_config.arm_config
                 ))
                 # Transform gripper data
                 transformed.update(self._transform_joint_data(
                     robot_obs.gripper,
-                    robot_config.gripper_keys
+                    robot_config.gripper_config
                 ))
         
         # Transform images with model-specific resizing
-        for image_ft in self.image_features:
-            if image_ft.topic_name in observations.images:
-                raw_image = observations.images[image_ft.topic_name]
+        for image_cfg in self.image_configs:
+            if image_cfg.topic_name in observations.images:
+                raw_image = observations.images[image_cfg.topic_name]
                 # Resize to model-specific resolution
-                resized_image = cv2.resize(raw_image, image_ft.resolution)
+                resized_image = cv2.resize(raw_image, image_cfg.resolution)
                 # Apply model-specific transformation
-                transformed[image_ft.model_input_image_key] = image_ft.transformation(resized_image)
+                transformed[image_cfg.model_input_image_key] = image_cfg.transformation(resized_image)
         
         # Add Octo-specific metadata
         transformed["timestep_pad_mask"] = np.array([[True]])
@@ -84,16 +84,16 @@ class OctoInputMapper(ModelInputMapper):
         result = {}
         
         # Position (always present, no scaling)
-        if keys_config.input_position_key:
-            result[keys_config.input_position_key] = np.array([joint_data.positions])
+        if keys_config.model_input_position_key:
+            result[keys_config.model_input_position_key] = np.array([joint_data.positions])
         
         # Velocity (optional, no scaling)
-        if keys_config.input_velocity_key:
-            result[keys_config.input_velocity_key] = np.array([joint_data.velocities])
+        if keys_config.model_input_velocity_key:
+            result[keys_config.model_input_velocity_key] = np.array([joint_data.velocities])
         
         # Load/Effort (optional, no scaling)
-        if keys_config.input_load_key:
-            result[keys_config.input_load_key] = joint_data.efforts
+        if keys_config.model_input_load_key:
+            result[keys_config.model_input_load_key] = joint_data.efforts
         
         return result
 

@@ -1,0 +1,74 @@
+# GR00T SO-101 Dual Arm Configuration
+model:
+  type: gr00t
+  mapper_type: rtc
+  client_type: real
+  port: 8043
+
+robots:
+  - prefix: "right_arm"
+    group_name: "arm"
+    frame_id: "world"
+    joint_state_topic: "/joint_states"
+    time_between_goals: 0.5
+    arm:
+      topic_name: "/right_arm_controller/follow_joint_trajectory"
+      model_input_position_key: "state.single_arm"
+      model_input_velocity_key: ""
+      model_input_load_key: ""
+      model_output_position_key: "action.single_arm"
+      model_output_velocity_key: ""
+    gripper:
+      topic_name: "/right_arm_controller/gripper_cmd"
+      model_input_position_key: "state.gripper"
+      model_input_velocity_key: ""
+      model_input_load_key: ""
+      model_output_position_key: "action.gripper"
+      model_output_velocity_key: ""
+
+  - prefix: "left_arm"
+    group_name: "arm"
+    frame_id: "world"
+    joint_state_topic: "/joint_states"
+    time_between_goals: 0.5
+    arm:
+      topic_name: "/left_arm_controller/follow_joint_trajectory"
+      model_input_position_key: "state.right_gripper_pos"
+      model_input_velocity_key: "state.right_gripper_vel"
+      model_input_load_key: "state.right_gripper_load"
+      model_output_position_key: "action.right_gripper_pos"
+      model_output_velocity_key: "action.right_gripper_vel"
+    gripper:
+      topic_name: "/left_arm_controller/gripper_cmd"
+      model_input_position_key: "state.left_gripper_pos"
+      model_input_velocity_key: "state.left_gripper_vel"
+      model_input_load_key: "state.left_gripper_load"
+      model_output_position_key: "action.left_gripper_pos"
+      model_output_velocity_key: "action.left_gripper_vel"
+
+images:
+  - model_input_key: "video.right_arm_wrist"
+    topic_name: "/right_arm_wrist/image_raw/compressed"
+    resolution: [640, 480]
+    image_type: compressed
+    transformation: gr00t
+
+  - model_input_key: "video.left_arm_wrist"
+    topic_name: "/left_arm_wrist/image_raw/compressed"
+    resolution: [640, 480]
+    image_type: compressed
+    transformation: gr00t
+
+  - model_input_key: "video.global1"
+    topic_name: "/global1/image_raw/compressed"
+    resolution: [640, 480]
+    image_type: compressed
+    transformation: gr00t
+
+  - model_input_key: "video.global2"
+    topic_name: "/global2/image_raw/compressed"
+    resolution: [640, 480]
+    image_type: compressed
+    transformation: gr00t
+
+

@@ -1,0 +1,33 @@
+# GR00T SO-101 Mock Test Client Configuration
+# For testing without actual model server
+model:
+  type: gr00t
+  mapper_type: rtc
+  client_type: mock  # Uses mock test client
+  port: 8043
+
+robots:
+  - prefix: ""
+    group_name: "arm"
+    frame_id: "world"
+    joint_state_topic: "/joint_states"
+    time_between_goals: 0.5
+    arm:
+      topic_name: "/arm_controller/follow_joint_trajectory"
+      model_input_position_key: "state.single_arm"
+      model_input_velocity_key: ""
+      model_input_load_key: ""
+      model_output_position_key: "action.single_arm"
+      model_output_velocity_key: ""
+    gripper:
+      topic_name: "/gripper_controller/gripper_cmd"
+      model_input_position_key: "state.gripper"
+      model_input_velocity_key: ""
+      model_input_load_key: ""
+      model_output_position_key: "action.gripper"
+      model_output_velocity_key: ""
+
+# No images for mock client (testing without cameras)
+images: []
+
+

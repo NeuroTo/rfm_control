@@ -28,8 +28,8 @@ class Gr00tDeltaEndeffectorMapper(ModelOutputMapper[Gr00tAction]):
             gripper_action=SynchronousGripperAction(gripper_aperture=gripper)
         )
             for robot_config in self.robots
-            for i, (robot_action, gripper) in enumerate(zip(model_output[robot_config.arm_keys.output_position_key],
-                                                            model_output[robot_config.gripper_keys.output_position_key]))]
+            for i, (robot_action, gripper) in enumerate(zip(model_output[robot_config.arm_config.model_output_position_key],
+                                                                                              model_output[robot_config.gripper_config.model_output_position_key]))]
 
 
 class OctoDeltaEndeffectorMapper(ModelOutputMapper[OctoAction]):

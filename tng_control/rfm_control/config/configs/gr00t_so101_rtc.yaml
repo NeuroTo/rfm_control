@@ -1,0 +1,41 @@
+# GR00T SO-101 with RTC Mapper Configuration
+model:
+  type: gr00t
+  mapper_type: rtc  # Real-Time Control mapper
+  client_type: real
+  port: 8043
+
+robots:
+  - prefix: ""
+    group_name: "arm"
+    frame_id: "world"
+    joint_state_topic: "/joint_states"
+    time_between_goals: 0.5
+    arm:
+      topic_name: "/arm_controller/follow_joint_trajectory"
+      model_input_position_key: "state.single_arm"
+      model_input_velocity_key: ""
+      model_input_load_key: ""
+      model_output_position_key: "action.single_arm"
+      model_output_velocity_key: ""
+    gripper:
+      topic_name: "/gripper_controller/gripper_cmd"
+      model_input_position_key: "state.gripper"
+      model_input_velocity_key: ""
+      model_input_load_key: ""
+      model_output_position_key: "action.gripper"
+      model_output_velocity_key: ""
+
+images:
+  - model_input_key: "video.wrist"
+    topic_name: "/wrist/image_raw/compressed"
+    resolution: [640, 480]
+    image_type: compressed
+    transformation: gr00t
+
+  - model_input_key: "video.global"
+    topic_name: "/global_front/image_raw/compressed"
+    resolution: [640, 480]
+    image_type: compressed
+    transformation: gr00t
+

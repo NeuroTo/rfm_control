@@ -6,7 +6,7 @@ from sensor_msgs.msg import Image, CompressedImage
 
 
 @dataclass
-class ImageFeature():
+class ImageConfig():
 
     model_input_image_key: str
     resolution: tuple[int, int]

@@ -25,11 +25,11 @@ class DeltaEndeffectorActionMapper(ActionMapper[JointTrajectory]):
     """
 
     def __init__(self, robot_config: RobotConfig) -> None:
-        self.joint_names = robot_config.arm_keys.joint_names
+        self.joint_names = robot_config.arm_config.joint_names
         self.fk_solver: MoveitFKSolver = MoveitFKSolver(
-            ["tool0"], robot_config.arm_keys.joint_names)
+            ["tool0"], robot_config.arm_config.joint_names)
         self.ik_solver: MoveitIKSolver = MoveitIKSolver(
-            robot_config.group_name, robot_config.frame_id, robot_config.arm_keys.joint_names)
+            robot_config.group_name, robot_config.frame_id, robot_config.arm_config.joint_names)
 
     @override
     def map_action_to_executor_input(
