@@ -1,0 +1,115 @@
+@startuml architecture_overview
+
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+' ============================================================================
+' CONFIGURATION
+' ============================================================================
+
+package "Configuration" {
+  class RfmConfigYaml <<schema>> {
+    model : ModelConfigYaml
+    action : ActionConfigYaml
+    robots : list[RobotConfigYaml]
+    images : list[ImageConfigYaml]
+  }
+  
+  class AdapterFactory {
+    + create_adapters(config_path) -> (ModelPort, ActionPort)
+  }
+}
+
+' ============================================================================
+' RFM ACTION SERVER
+' ============================================================================
+
+class RfmActionServer {
+  - model_port : ModelPort
+  - action_port : ActionPort
+  + move_from_prompt(prompt: str) -> RfmControlStatusCode
+}
+
+' ============================================================================
+' MODEL ADAPTER
+' ============================================================================
+
+package "Model Adapter" {
+  
+  interface ModelPort {
+    + get_action(prompt: str)
+  }
+  
+  interface ModelClient {
+    + get_action(observation, prompt)
+  }
+  
+  interface ModelInputMapper {
+    + transform_observation(obs: Observations)
+  }
+  
+  interface ModelOutputMapper {
+    + to_action(model_output)
+  }
+}
+
+' ============================================================================
+' ACTION ADAPTER
+' ============================================================================
+
+package "Action Adapter" {
+  
+  interface ActionPort {
+    + move(node, actions)
+  }
+  
+  class Robot {
+    prefix : str
+    - action_mapper : ActionMapper
+    - arm_executor : MotionExecutor
+    - gripper_executor : MotionExecutor
+  }
+  
+  interface ActionMapper {
+    + map_action_to_executor_input(action, state)
+  }
+  
+  interface MotionExecutor {
+    + execute_async(command, node)
+  }
+}
+
+' ============================================================================
+' OBSERVATION HANDLER
+' ============================================================================
+
+package "Observation Handler" {
+  interface ObservationHandler {
+    + get_observations()
+  }
+}
+
+' ============================================================================
+' RELATIONSHIPS
+' ============================================================================
+
+AdapterFactory ..> RfmConfigYaml : loads
+AdapterFactory ..> ModelPort : creates
+AdapterFactory ..> ActionPort : creates
+
+RfmActionServer *-- ModelPort
+RfmActionServer *-- ActionPort
+
+ModelPort o-- ModelClient
+ModelPort o-- ModelInputMapper
+ModelPort o-- ModelOutputMapper
+ModelPort o-- ObservationHandler
+
+ActionPort o-- Robot
+ActionPort o-- ObservationHandler
+
+Robot o-- ActionMapper
+Robot o-- MotionExecutor
+
+@enduml
+
