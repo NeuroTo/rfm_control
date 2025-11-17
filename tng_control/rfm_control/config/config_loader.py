@@ -7,10 +7,10 @@ from sensor_msgs.msg import Image, CompressedImage
 from pydantic import ValidationError
 
 from tng_control.rfm_control.config.config_schema import RfmConfigYaml, ImageConfigYaml, RobotConfigYaml
-from tng_control.rfm_control.config.model_configs.robot_config import (
+from tng_control.rfm_control.config.config_models.robot_config import (
     RobotConfig, ActuatorConfig
 )
-from tng_control.rfm_control.config.model_configs.image_config import ImageConfig
+from tng_control.rfm_control.config.config_models.image_config import ImageConfig
 from tng_robot_arms_shared.ros2_control_joint_config import Ros2ControlJointConfig
 
 

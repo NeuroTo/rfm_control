@@ -1,8 +1,10 @@
-# GR00T SO-101 with RTC Mapper Configuration
+# GR00T SO-101 Mock RTC Test Client Configuration
+# For testing RTC pipeline without actual model server
+# Uses Gr00tRTCClientMock which outputs 1D arrays (single-step format)
 model:
   type: gr00t
-  mapper_type: rtc  # Real-Time Control mapper (single-step)
-  client_type: real
+  mapper_type: rtc  # RTC mapper for RTC mock client (outputs 1D array)
+  client_type: mock_rtc  # Uses RTC mock test client
   port: 8043
 
 action:
@@ -30,16 +32,7 @@ robots:
       model_output_position_key: "action.gripper"
       model_output_velocity_key: ""
 
-images:
-  - model_input_key: "video.wrist"
-    topic_name: "/wrist/image_raw/compressed"
-    resolution: [640, 480]
-    image_type: compressed
-    transformation: gr00t
+# No images for mock client (testing without cameras)
+images: []
 
-  - model_input_key: "video.global"
-    topic_name: "/global_front/image_raw/compressed"
-    resolution: [640, 480]
-    image_type: compressed
-    transformation: gr00t
 

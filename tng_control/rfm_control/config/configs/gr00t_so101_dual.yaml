@@ -1,9 +1,13 @@
 # GR00T SO-101 Dual Arm Configuration
 model:
   type: gr00t
-  mapper_type: rtc
+  mapper_type: rtc  # Real-Time Control mapper (single-step)
   client_type: real
   port: 8043
+
+action:
+  type: follow_joint_trajectory
+  arm_action_mapper: absolute_joint  # GR00T JointStateMapperRTC → AbsoluteJointStateAction
 
 robots:
   - prefix: "right_arm"

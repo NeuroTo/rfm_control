@@ -6,6 +6,10 @@ model:
   client_type: mock  # Uses mock test client
   port: 8000
 
+action:
+  type: follow_joint_trajectory
+  arm_action_mapper: delta_endeffector  # Octo DeltaEndeffectorMapper → DeltaEndeffectorAction
+
 robots:
   - prefix: ""
     group_name: "arm"

@@ -1,7 +1,16 @@
 """Configuration schema for robot foundation model control using Pydantic."""
-from typing import Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 from typing_extensions import Self
+
+from tng_control.rfm_control.config.config_types import (
+    ModelType,
+    ClientType,
+    MapperType,
+    ActionType,
+    ActionMapperType,
+    ImageType,
+    TransformationType,
+)
 
 
 class ArmConfig(BaseModel):
@@ -99,11 +108,11 @@ class ImageConfigYaml(BaseModel):
         description="Target image resolution as [width, height]",
         examples=[(640, 480), (256, 256)]
     )
-    image_type: Literal["raw", "compressed"] = Field(
+    image_type: ImageType = Field(
         default="compressed",
         description="ROS2 image message type"
     )
-    transformation: Literal["identity", "gr00t", "octo"] = Field(
+    transformation: TransformationType = Field(
         default="identity",
         description="Model-specific image transformation"
     )
@@ -122,15 +131,15 @@ class ImageConfigYaml(BaseModel):
 class ModelConfigYaml(BaseModel):
     """Model configuration from YAML."""
     
-    type: Literal["gr00t", "octo"] = Field(
+    type: ModelType = Field(
         ..., 
         description="Type of robot foundation model"
     )
-    mapper_type: Literal["default", "rtc"] = Field(
+    mapper_type: MapperType = Field(
         default="default",
         description="Output mapper variant (model-specific)"
     )
-    client_type: Literal["real", "mock"] = Field(
+    client_type: ClientType = Field(
         default="real",
         description="Model client type (real model or mock test values)"
     )
@@ -142,10 +151,27 @@ class ModelConfigYaml(BaseModel):
     )
 
 
+class ActionConfigYaml(BaseModel):
+    """Action adapter configuration from YAML."""
+    
+    type: ActionType = Field(
+        default="follow_joint_trajectory",
+        description="Type of action adapter/controller"
+    )
+    arm_action_mapper: ActionMapperType = Field(
+        default="absolute_joint",
+        description="Action mapper type for arm actions (must match model output type)"
+    )
+
+
 class RfmConfigYaml(BaseModel):
     """Complete RFM control configuration from YAML."""
     
     model: ModelConfigYaml = Field(..., description="Model configuration")
+    action: ActionConfigYaml = Field(
+        default_factory=ActionConfigYaml,
+        description="Action adapter configuration"
+    )
     robots: list[RobotConfigYaml] = Field(
         ..., 
         min_length=1,

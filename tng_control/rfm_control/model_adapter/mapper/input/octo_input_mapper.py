@@ -3,8 +3,8 @@ import numpy as np
 import cv2
 
 from tng_control.rfm_control.model_adapter.mapper.input.model_input_mapper import ModelInputMapper
-from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
-from tng_control.rfm_control.config.model_configs.image_config import ImageConfig
+from tng_control.rfm_control.config.config_models.robot_config import RobotConfig
+from tng_control.rfm_control.config.config_models.image_config import ImageConfig
 from tng_control.rfm_control.observation_handler.observation_dto import Observations, JointState
 
 

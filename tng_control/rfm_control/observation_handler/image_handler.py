@@ -9,7 +9,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image, CompressedImage
 
 from tng_control.rfm_control.observation_handler.observation_handler import ObservationHandler
-from tng_control.rfm_control.config.model_configs.image_config import ImageConfig
+from tng_control.rfm_control.config.config_models.image_config import ImageConfig
 from tng_control.rfm_control.observation_handler.observation_dto import Observations
 from tng_control.rfm_control.exceptions import ImageNotAvailableException
 

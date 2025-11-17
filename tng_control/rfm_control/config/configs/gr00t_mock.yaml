@@ -2,9 +2,13 @@
 # For testing without actual model server
 model:
   type: gr00t
-  mapper_type: rtc
+  mapper_type: default  # Default mapper for mock client (outputs 2D array)
   client_type: mock  # Uses mock test client
   port: 8043
+
+action:
+  type: follow_joint_trajectory
+  arm_action_mapper: absolute_joint  # GR00T JointStateMapper → AbsoluteJointStateAction
 
 robots:
   - prefix: ""

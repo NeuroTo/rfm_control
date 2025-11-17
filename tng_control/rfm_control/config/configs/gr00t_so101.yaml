@@ -5,6 +5,10 @@ model:
   client_type: real
   port: 8043
 
+action:
+  type: follow_joint_trajectory
+  arm_action_mapper: absolute_joint  # GR00T JointStateMapper → AbsoluteJointStateAction
+
 robots:
   - prefix: ""
     group_name: "arm"
