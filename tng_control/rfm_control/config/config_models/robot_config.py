@@ -24,3 +24,4 @@ class RobotConfig:
     gripper_config: ActuatorConfig
     joint_state_topic: str
     time_between_goals: float = DEFAULT_TIME_BETWEEN_GOALS
+

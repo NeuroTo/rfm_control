@@ -1,14 +1,12 @@
 import time
 import numpy as np
 
-from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_robot_inference_client import RobotInferenceClient
-from tng_control.rfm_control.config.model_client_config_base import Gr00tConfigBase
 from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient, Gr00tAction
 
 
 class Gr00tClientMock(Gr00tModelClient):
 
-    def __init__(self, config: Gr00tConfigBase):
+    def __init__(self):
         self.start_time = time.time()
         self.started = False
         self.positions = np.array([
@@ -45,7 +43,7 @@ class Gr00tClientMock(Gr00tModelClient):
 class Gr00tRTCClientMock(Gr00tModelClient):
     """Mock policy client implementation for GR00T RTC robot models."""
 
-    def __init__(self, config: Gr00tConfigBase):
+    def __init__(self):
         self.start_time = time.time()
         self.started = False
 

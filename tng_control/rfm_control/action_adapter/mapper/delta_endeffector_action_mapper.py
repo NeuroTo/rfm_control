@@ -13,7 +13,7 @@ from tng_control.rfm_control.model_adapter.mapper.pose_util import action_to_pos
 from tng_control.rfm_control.action_adapter.mapper.action_mapper import ActionMapper
 from tng_control.rfm_control.domain_model.arm_action import ArmAction
 from tng_control.rfm_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
-from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
+from tng_control.rfm_control.config.config_models.robot_config import RobotConfig
 
 duration_between_goals: Duration = Duration(sec=0, nanosec=10**8)
 

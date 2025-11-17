@@ -18,7 +18,7 @@ class FollowJointTrajectoryAdapter(ActionPort):
     """
     Action adapter for robots using FollowJointTrajectory controller.
     
-    Maps high-level actions to JointTrajectory messages and executes them on the robot
+    Maps actions to JointTrajectory messages and executes them on the robot
     """
 
     @property

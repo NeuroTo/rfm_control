@@ -6,7 +6,7 @@ from tng_control.rfm_control.model_adapter.mapper.output.model_output_mapper imp
 from tng_control.rfm_control.domain_model.delta_endeffector_action import DeltaEndeffectorAction
 from tng_control.rfm_control.domain_model.robot_action import RobotAction
 from tng_control.rfm_control.domain_model.synchronous_gripper_action import SynchronousGripperAction
-from tng_control.rfm_control.config.model_configs.robot_config import RobotConfig
+from tng_control.rfm_control.config.config_models.robot_config import RobotConfig
 from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tAction
 from tng_control.rfm_control.model_adapter.model_clients.octo.octo_model_client import OctoAction
 
