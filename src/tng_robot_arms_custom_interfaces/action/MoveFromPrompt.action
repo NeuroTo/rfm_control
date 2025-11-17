@@ -1,0 +1,11 @@
+# Request
+string prompt
+---
+# Result
+geometry_msgs/Pose[] gripper_poses
+float64[] gripper_positions
+int32 status_code
+---
+# Feedback
+geometry_msgs/Pose[] gripper_poses
+float64[] gripper_positions
