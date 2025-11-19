@@ -1,4 +1,4 @@
-# TNG Control
+# RFM Control
 
 ROS2 package for robot control using foundation models (Robot Foundation Model Control).
 
@@ -20,7 +20,7 @@ This package contains:
 ```bash
 # Build the ROS2 package
 cd /path/to/workspace
-colcon build --packages-select tng_control
+colcon build --packages-select rfm_control
 
 # Source the workspace
 source install/setup.bash
@@ -41,7 +41,7 @@ The `action_executor` module can be used independently from the RFM control syst
 ```python
 import rclpy
 from rclpy.node import Node
-from tng_control.action_executor.joint_trajectory_action_executor import JointTrajectoryActionExecutor
+from rfm_control.action_executor.joint_trajectory_action_executor import JointTrajectoryActionExecutor
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 # Initialize ROS2
@@ -78,7 +78,7 @@ rclpy.shutdown()
 #### Example: Gripper Control
 
 ```python
-from tng_control.action_executor.gripper_action_executor import GripperActionExecutor
+from rfm_control.action_executor.gripper_action_executor import GripperActionExecutor
 from control_msgs.msg import GripperCommand
 
 # Create gripper executor
@@ -105,18 +105,18 @@ rclpy.spin_until_future_complete(node, future)
 
 ```bash
 # Run RFM action server with a configuration file
-ros2 run tng_control rfm_action_server path/to/config.yaml
+ros2 run rfm_control rfm_action_server path/to/config.yaml
 
 # Example: Run with GR00T mock configuration
-ros2 run tng_control rfm_action_server \
-  src/tng_robot_arms/tng_control/tng_control/config/configs/gr00t_mock.yaml
+ros2 run rfm_control rfm_action_server \
+  src/rfm_control/rfm_control/config/configs/gr00t_mock.yaml
 ```
 
 ### Python API
 
 ```python
-from tng_control.factories.adapter_factory import AdapterFactory
-from tng_control.rfm_action_server import RfmActionServer
+from rfm_control.factories.adapter_factory import AdapterFactory
+from rfm_control.rfm_action_server import RfmActionServer
 
 # Load configuration and create adapters
 factory = AdapterFactory()
@@ -131,7 +131,7 @@ server.move_from_prompt("pick up the cup")
 
 For detailed documentation about rfm control, configuration guides, and extension examples, see:
 
-📘 **[RFM Control Documentation](src/tng_control/tng_control/README.md)**
+📘 **[RFM Control Documentation](src/rfm_control/rfm_control/README.md)**
 
 This includes:
 - **Architecture Overview**: Hexagonal Architecture, layers, and execution flow
@@ -141,7 +141,7 @@ This includes:
 
 ## Configuration Files
 
-Example configurations are available in [`src/tng_control/tng_control/config/configs/`](src/tng_control/tng_control/config/configs/):
+Example configurations are available in [`src/rfm_control/rfm_control/config/configs/`](src/rfm_control/rfm_control/config/configs/):
 
 | Configuration | Description |
 |---------------|-------------|
