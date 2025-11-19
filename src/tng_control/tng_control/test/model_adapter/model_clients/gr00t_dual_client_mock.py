@@ -1,8 +1,8 @@
 import numpy as np
 import time
 
-from tng_control.rfm_control.config.model_client_config_base import Gr00tConfigBase
-from tng_control.rfm_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient, Gr00tAction
+from tng_control.config.model_client_config_base import Gr00tConfigBase
+from tng_control.model_adapter.model_clients.gr00t.gr00t_model_client import Gr00tModelClient, Gr00tAction
 
 
 class Gr00tDualClientMock(Gr00tModelClient):

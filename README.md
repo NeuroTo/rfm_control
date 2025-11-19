@@ -6,15 +6,12 @@ ROS2 package for robot control using foundation models (Robot Foundation Model C
 
 This package provides infrastructure for controlling robots using AI foundation models like GR00T and Octo:
 
-- **`rfm_control/`**: Core robot foundation model control system
-  - Configuration-driven architecture based on Hexagonal Architecture (Ports and Adapters pattern)
-  - Support for multiple AI models (GR00T, Octo) and robots
-  - YAML-based configuration for flexible robot setups
-  - Type-safe configuration with Pydantic validation
-
-- **`action_executor/`**: Action execution components for robot controllers
-  - Joint trajectory execution
-  - Gripper control
+This package contains:
+- Configuration-driven architecture based on Hexagonal Architecture (Ports and Adapters pattern)
+- Support for multiple AI models (GR00T, Octo) and robots
+- YAML-based configuration for flexible robot setups
+- Type-safe configuration with Pydantic validation
+- Action execution components for robot controllers (joint trajectory, gripper control)
 
 ## Quick Start
 
@@ -112,14 +109,14 @@ ros2 run tng_control rfm_action_server path/to/config.yaml
 
 # Example: Run with GR00T mock configuration
 ros2 run tng_control rfm_action_server \
-  src/tng_robot_arms/tng_control/tng_control/rfm_control/config/configs/gr00t_mock.yaml
+  src/tng_robot_arms/tng_control/tng_control/config/configs/gr00t_mock.yaml
 ```
 
 ### Python API
 
 ```python
-from tng_control.rfm_control.factories.adapter_factory import AdapterFactory
-from tng_control.rfm_control.rfm_action_server import RfmActionServer
+from tng_control.factories.adapter_factory import AdapterFactory
+from tng_control.rfm_action_server import RfmActionServer
 
 # Load configuration and create adapters
 factory = AdapterFactory()
@@ -134,7 +131,7 @@ server.move_from_prompt("pick up the cup")
 
 For detailed documentation about rfm control, configuration guides, and extension examples, see:
 
-📘 **[RFM Control Documentation](tng_control/rfm_control/README.md)**
+📘 **[RFM Control Documentation](src/tng_control/tng_control/README.md)**
 
 This includes:
 - **Architecture Overview**: Hexagonal Architecture, layers, and execution flow
@@ -144,7 +141,7 @@ This includes:
 
 ## Configuration Files
 
-Example configurations are available in [`tng_control/rfm_control/config/configs/`](tng_control/rfm_control/config/configs/):
+Example configurations are available in [`src/tng_control/tng_control/config/configs/`](src/tng_control/tng_control/config/configs/):
 
 | Configuration | Description |
 |---------------|-------------|

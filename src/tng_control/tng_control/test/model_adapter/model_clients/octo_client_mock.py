@@ -1,7 +1,7 @@
 from typing import Any
 from typing_extensions import override
 
-from tng_control.rfm_control.model_adapter.model_clients.octo.octo_model_client import OctoModelClient, OctoAction
+from tng_control.model_adapter.model_clients.octo.octo_model_client import OctoModelClient, OctoAction
 
 
 class OctoClientMock(OctoModelClient):

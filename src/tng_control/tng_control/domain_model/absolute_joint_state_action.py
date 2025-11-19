@@ -1,0 +1,11 @@
+from attr import dataclass
+import numpy as np
+
+from tng_control.domain_model.arm_action import ArmAction
+
+
+@dataclass(frozen=True)
+class AbsoluteJointStateAction(ArmAction):
+    joint_states: np.ndarray  # one-dimensional array of floats
+    time_between_goals: float # seconds
+    joint_names: list[str] = []
