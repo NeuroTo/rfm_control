@@ -131,7 +131,7 @@ server.move_from_prompt("pick up the cup")
 
 For detailed documentation about rfm control, configuration guides, and extension examples, see:
 
-📘 **[RFM Control Documentation](src/rfm_control/rfm_control/README.md)**
+📘 **[RFM Control Documentation](src/rfm_control/README.md)**
 
 This includes:
 - **Architecture Overview**: Hexagonal Architecture, layers, and execution flow
@@ -149,14 +149,3 @@ Example configurations are available in [`src/rfm_control/rfm_control/config/con
 | `gr00t_so101_rtc.yaml` | GR00T model with SO-101 robot (real-time control) |
 | `gr00t_so101_dual.yaml` | GR00T model with dual-arm setup |
 | `octo_ur5_mock.yaml` | Octo model with UR5 robot (mock client) |
-
-
-
-## License
-
-[Your License Here]
-
-## Contributors
-
-[Your Contributors Here]
-
