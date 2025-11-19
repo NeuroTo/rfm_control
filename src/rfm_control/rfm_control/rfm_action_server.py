@@ -13,7 +13,7 @@ from rfm_control.exceptions import (
     ImageNotAvailableException, JointStatesNotAvailableException
 )
 from rfm_control.domain_model.robot_action import RobotAction
-from tng_robot_arms_custom_interfaces.action import MoveFromPrompt
+from custom_rfm_interfaces.action import MoveFromPrompt
 
 
 

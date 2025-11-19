@@ -7,8 +7,8 @@ from rclpy.qos import QoSProfile, HistoryPolicy, DurabilityPolicy
 from std_msgs.msg import String
 from pathlib import Path
 
-from tng_robot_arms_shared.robot_description_listener import get_robot_description_from_topic
-from tng_robot_arms_shared.ros2_control_joint_config import Ros2ControlJointConfig, parse_robot_description_to_joint_configs
+from shared.robot_description_listener import get_robot_description_from_topic
+from shared.ros2_control_joint_config import Ros2ControlJointConfig, parse_robot_description_to_joint_configs
 
 
 class RobotDescriptionPublisher(Node):

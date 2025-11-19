@@ -13,8 +13,8 @@ from rfm_control.factories.model_adapter_factory import ModelAdapterFactory
 from rfm_control.factories.action_adapter_factory import ActionAdapterFactory
 
 
-from tng_robot_arms_shared.robot_description_listener import get_robot_description_from_topic
-from tng_robot_arms_shared.ros2_control_joint_config import (
+from shared.robot_description_listener import get_robot_description_from_topic
+from shared.ros2_control_joint_config import (
     parse_robot_description_to_joint_configs,
     Ros2ControlJointConfig
 )

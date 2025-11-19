@@ -1,7 +1,7 @@
 import yaml
 from typing import ClassVar, Literal
 from dataclasses import dataclass
-from tng_robot_arms_shared.package_paths import TNG_ROBOT_ARMS_BRINGUP
+from shared.package_paths import TNG_ROBOT_ARMS_BRINGUP
 
 SINGLE_ARM_ROBOT_MODELS = ['igus_rebel_6dof', 'panda', 'so101', 'ur5']
 DUAL_ARM_ROBOT_MODELS = ['so101_bimanual']
