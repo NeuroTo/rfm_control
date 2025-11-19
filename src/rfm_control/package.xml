@@ -13,8 +13,8 @@
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
-  <exec_depend>tng_robot_arms_shared</exec_depend>
-  <exec_depend>tng_robot_arms_custom_interfaces</exec_depend>
+  <exec_depend>shared</exec_depend>
+  <exec_depend>custom_rfm_interfaces</exec_depend>
 
 
   <test_depend>ament_copyright</test_depend>

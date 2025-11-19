@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>tng_robot_arms_shared</name>
+  <name>shared</name>
   <version>0.0.0</version>
   <description>contains shared python code commonly required in various nodes and launch files</description>
   <maintainer email="luis.augenstein@tngtech.com">ubuntu</maintainer>

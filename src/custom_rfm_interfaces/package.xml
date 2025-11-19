@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>tng_robot_arms_custom_interfaces</name>
+  <name>custom_rfm_interfaces</name>
   <version>0.0.0</version>
-  <description>Custom Interfaces of the TNG robot arm project.</description>
+  <description>Custom interfaces for RFM (Robot Foundation Model) control.</description>
   <maintainer email="philipp.bitzer@tngtech.com">ubuntu</maintainer>
   <license>TODO: License declaration</license>
 

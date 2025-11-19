@@ -11,7 +11,7 @@ from rfm_control.config.config_models.robot_config import (
     RobotConfig, ActuatorConfig
 )
 from rfm_control.config.config_models.image_config import ImageConfig
-from tng_robot_arms_shared.ros2_control_joint_config import Ros2ControlJointConfig
+from shared.ros2_control_joint_config import Ros2ControlJointConfig
 
 
 class ConfigLoader:

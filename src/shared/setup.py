@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'tng_robot_arms_shared'
+package_name = 'shared'
 
 setup(
     name=package_name,

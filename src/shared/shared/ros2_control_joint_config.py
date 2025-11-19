@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass
 import xml.etree.ElementTree as ET
-from tng_robot_arms_shared.robot_model_config import RobotModelConfig
+from shared.robot_model_config import RobotModelConfig
 
 @dataclass
 class Ros2ControlJointConfig:
