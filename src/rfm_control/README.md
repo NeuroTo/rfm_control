@@ -72,6 +72,26 @@ This system implements the **Hexagonal Architecture** pattern, which provides cl
 
 ## Example Usage
 
+### Using the RFM Client (Command Line)
+
+The RFM client provides a simple command-line interface to send natural language prompts to the running action server:
+
+```bash
+# First, start the action server in one terminal
+ros2 run rfm_control rfm_action_server rfm_control/config/gr00t_so101.yaml
+
+# Then, send a prompt using the client in another terminal
+ros2 run rfm_control rfm_client "pick up the cup"
+
+# Or with more complex prompts
+ros2 run rfm_control rfm_client "move the robot to the home position"
+ros2 run rfm_control rfm_client "grasp the blue object and place it in the box"
+```
+
+### Using the Python API
+
+You can also use the RFM control system directly in your Python code:
+
 ```python
 from rfm_control.factories.adapter_factory import AdapterFactory
 from rfm_control.rfm_action_server import RfmActionServer
