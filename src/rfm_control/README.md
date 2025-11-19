@@ -52,7 +52,7 @@ This system implements the **Hexagonal Architecture** pattern, which provides cl
 
 ## Architecture Diagram
 
-![Architecture Overview](../../../docs/plantuml/architecture_overview.svg)
+![Architecture Overview](docs/plantuml/architecture_overview.svg)
 
 ## Execution Flow
 
@@ -78,7 +78,7 @@ from rfm_control.rfm_action_server import RfmActionServer
 
 # Load configuration and create adapters
 factory = AdapterFactory()
-model_port, action_port = factory.create_adapters("config/gr00t_so101.yaml")
+model_port, action_port = factory.create_adapters("rfm_control/config/gr00t_so101.yaml")
 
 # Initialize and run server
 server = RfmActionServer(model_port, action_port)
@@ -99,16 +99,16 @@ Choose a template that matches your setup:
 
 | Template | Description |
 |----------|-------------|
-| [`gr00t_mock.yaml`](config/configs/gr00t_mock.yaml) | Single arm, GR00T model, mock client for testing |
-| [`gr00t_so101_rtc.yaml`](config/configs/gr00t_so101_rtc.yaml) | Single arm, GR00T model, real-time control |
-| [`gr00t_so101_dual.yaml`](config/configs/gr00t_so101_dual.yaml) | Dual arm, GR00T model |
-| [`octo_ur5_mock.yaml`](config/configs/octo_ur5_mock.yaml) | Single arm, Octo model, mock client |
+| [`gr00t_mock.yaml`](rfm_control/config/configs/gr00t_mock.yaml) | Single arm, GR00T model, mock client for testing |
+| [`gr00t_so101_rtc.yaml`](rfm_control/config/configs/gr00t_so101_rtc.yaml) | Single arm, GR00T model, real-time control |
+| [`gr00t_so101_dual.yaml`](rfm_control/config/configs/gr00t_so101_dual.yaml) | Dual arm, GR00T model |
+| [`octo_ur5_mock.yaml`](rfm_control/config/configs/octo_ur5_mock.yaml) | Single arm, Octo model, mock client |
 
 ### Creating Custom Configurations
 
 **Step 1**: Copy a template
 ```bash
-cd config/configs/
+cd rfm_control/config/configs/
 cp gr00t_mock.yaml my_robot_config.yaml
 ```
 
@@ -153,7 +153,7 @@ For a comprehensive step-by-step guide including:
 - Common patterns (dual-arm, multiple cameras, testing vs production)
 - Troubleshooting tips
 
-**See the complete guide**: [`config/README.md`](config/README.md#-complete-guide-configuring-for-your-robot)
+**See the complete guide**: [`rfm_control/config/README.md`](rfm_control/config/README.md#-complete-guide-configuring-for-your-robot)
 
 ### 🔧 Extending the System
 
@@ -167,4 +167,4 @@ All extensions follow the Hexagonal Architecture pattern and the registry-based 
 - Type-safe configuration through `config_types.py` and Pydantic
 - Easy testing with mock implementations
 
-**See the extension guide**: [`config/README.md`](config/README.md#-extending-the-configuration-system)
+**See the extension guide**: [`rfm_control/config/README.md`](rfm_control/config/README.md#-extending-the-configuration-system)
